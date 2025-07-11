@@ -1,6 +1,6 @@
 import { defineConfig } from '@umijs/max';
 
-export const API_URL = 'http://101.37.35.136:9161'; // API地址
+export const API_URL = 'http://101.37.35.136:9091'; // API地址
 
 /**
  * 导出的多环境变量命名约定：一律大写且采用下划线分割单词

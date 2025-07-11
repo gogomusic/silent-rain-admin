@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { createStyles } from 'antd-style';
 import api from '@/services/silent-rain-admin';
@@ -15,6 +15,14 @@ const useStyles = createStyles(() => {
       margin: '0 auto 0 auto',
       padding: 24,
       paddingTop: 20,
+    },
+    bg: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: -1,
     },
     h2: {
       marginBottom: 24,
@@ -33,8 +41,21 @@ const useStyles = createStyles(() => {
       padding: '30px 60px 20px',
       marginTop: 100,
       background: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);',
-      boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+      boxShadow: '0 10px 24px rgba(0,0,0,0.3)',
       borderRadius: 8,
+      position: 'relative',
+    },
+    login: {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      width: 80,
+      fontSize: 14,
+      color: '#1890ff',
+      cursor: 'pointer',
+      textAlign: 'right',
+      padding: '8px 16px',
+      background: 'url(/svg/register-corner-bg.svg) no-repeat center center',
     },
   };
 });
@@ -46,6 +67,17 @@ const Register: React.FC = () => {
   const [emailLoading, setEmailLoading] = React.useState(false);
   const [emailSecond, setEmailSecond] = React.useState(codeTimeout);
   const timerRef = React.useRef<number | null>(null);
+
+  useEffect(() => {
+    let colorbg = new Color4Bg.BlurGradientBg({
+      dom: 'login-bg',
+      colors: ['#4098DB', '#ECF3FC', '#C1EBFB', '#A9E0F8'],
+      loop: true,
+      vUv: 0,
+    });
+    colorbg.update('noise', 0);
+  }, []);
+
   const startEmailLoading = () => {
     setEmailLoading(true);
     timerRef.current = window.setInterval(() => {
@@ -78,10 +110,14 @@ const Register: React.FC = () => {
 
   return (
     <div className={styles.main}>
+      <div id="login-bg" className={styles.bg}></div>
       <Helmet>
         <title>注册 {Settings.title}</title>
       </Helmet>
       <div className={styles.form}>
+        <div className={styles.login} onClick={() => history.push('/user/login')}>
+          登录
+        </div>
         <h2 className={styles.h2}>用户注册</h2>
         <Form form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item

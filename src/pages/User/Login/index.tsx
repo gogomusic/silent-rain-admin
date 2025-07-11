@@ -5,7 +5,7 @@ import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { history, Helmet } from '@umijs/max';
 import { Tabs } from 'antd';
 import Settings from '../../../../config/defaultSettings';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createStyles } from 'antd-style';
 
 const useStyles = createStyles(({ token }) => {
@@ -37,9 +37,14 @@ const useStyles = createStyles(({ token }) => {
       flexDirection: 'column',
       height: '100vh',
       overflow: 'auto',
-      backgroundImage:
-        "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
-      backgroundSize: '100% 100%',
+    },
+    bg: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: -1,
     },
   };
 });
@@ -86,8 +91,19 @@ const Login: React.FC = () => {
   // };
   // const { status } = userLoginState;
 
+  useEffect(() => {
+    let colorbg = new Color4Bg.BlurGradientBg({
+      dom: 'login-bg',
+      colors: ['#4098DB', '#ECF3FC', '#C1EBFB', '#A9E0F8'],
+      loop: true,
+      vUv: 0,
+    });
+    colorbg.update('noise', 0);
+  }, []);
+
   return (
     <div className={styles.container}>
+      <div id="login-bg" className={styles.bg}></div>
       <Helmet>
         <title>登录 ☺ {Settings.title}</title>
       </Helmet>
