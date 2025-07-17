@@ -128,6 +128,7 @@ export default defineConfig({
     { src: '/scripts/loading.js', async: true },
     { src: '/scripts/BlurGradientBg.min.js', async: true },
   ],
+
   //================ pro 插件配置 =================
   presets: ['umi-presets-pro'],
   /**
@@ -142,9 +143,11 @@ export default defineConfig({
       mock: false,
     },
   ],
+
   mfsu: {
     strategy: 'normal',
   },
+  mako: {},
   esbuildMinifyIIFE: true,
   requestRecord: {},
 });
