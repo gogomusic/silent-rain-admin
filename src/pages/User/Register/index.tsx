@@ -69,13 +69,13 @@ const Register: React.FC = () => {
   const timerRef = React.useRef<number | null>(null);
 
   useEffect(() => {
-    let colorbg = new Color4Bg.BlurGradientBg({
+    let colorBg = new Color4Bg.BlurGradientBg({
       dom: 'login-bg',
       colors: ['#4098DB', '#ECF3FC', '#C1EBFB', '#A9E0F8'],
       loop: true,
       vUv: 0,
     });
-    colorbg.update('noise', 0);
+    colorBg.update('noise', 0);
   }, []);
 
   const startEmailLoading = () => {
@@ -101,11 +101,13 @@ const Register: React.FC = () => {
   };
 
   const onFinish = async (values: API.CreateUserDto) => {
-    const { code } = await sysControllerRegister(values);
-    if (code === 0) message.success('注册成功，即将返回登录页');
-    setTimeout(() => {
-      history.push('/user/login');
-    }, 1000);
+    const { success } = await sysControllerRegister(values);
+    if (success) {
+      message.success('注册成功，即将返回登录页');
+      setTimeout(() => {
+        history.push('/user/login');
+      }, 1000);
+    }
   };
 
   return (

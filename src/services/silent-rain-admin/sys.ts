@@ -2,12 +2,24 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 注册 新用户注册 POST /sys/register */
+/** 登录 POST /sys/login */
+export async function sysControllerLogin(body: API.LoginUserDto, options?: { [key: string]: any }) {
+  return request<API.ResponseDto & { data?: string }>('/sys/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 注册 POST /sys/register */
 export async function sysControllerRegister(
   body: API.CreateUserDto,
   options?: { [key: string]: any },
 ) {
-  return request<any>('/sys/register', {
+  return request<API.ResponseDto>('/sys/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -6,3 +6,4 @@ public
 dist
 .umi
 mock
+/src/services/silent-rain-admin/

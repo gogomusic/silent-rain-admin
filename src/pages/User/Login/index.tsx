@@ -3,10 +3,11 @@ import { Footer } from '@/components';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { history, Helmet } from '@umijs/max';
-import { Tabs } from 'antd';
+import { message, Tabs } from 'antd';
 import Settings from '../../../../config/defaultSettings';
 import React, { useEffect } from 'react';
 import { createStyles } from 'antd-style';
+import { sysControllerLogin } from '@/services/silent-rain-admin/sys';
 
 const useStyles = createStyles(({ token }) => {
   return {
@@ -68,37 +69,27 @@ const Login: React.FC = () => {
   //   }
   // };
 
-  // const handleSubmit = async (values: API.LoginParams) => {
-  //   try {
-  //     // 登录
-  //     const msg = await login({ ...values });
-  //     if (msg.status === 'ok') {
-  //       const defaultLoginSuccessMessage = '登录成功！';
-  //       message.success(defaultLoginSuccessMessage);
-  //       await fetchUserInfo();
-  //       const urlParams = new URL(window.location.href).searchParams;
-  //       history.push(urlParams.get('redirect') || '/');
-  //       return;
-  //     }
-  //     console.info(msg);
-  //     // 如果失败去设置用户错误信息
-  //     setUserLoginState(msg);
-  //   } catch (error) {
-  //     const defaultLoginFailureMessage = '登录失败，请重试！'
-  //     console.error(error);
-  //     message.error(defaultLoginFailureMessage);
-  //   }
-  // };
-  // const { status } = userLoginState;
+  const handleSubmit = async (values: API.LoginUserDto) => {
+    const { success, data: token } = await sysControllerLogin(values);
+    if (success) {
+      const defaultLoginSuccessMessage = '登录成功！';
+      message.success(defaultLoginSuccessMessage);
+      console.log(token);
+      //  await fetchUserInfo();
+      //  const urlParams = new URL(window.location.href).searchParams;
+      //  history.push(urlParams.get('redirect') || '/');
+      //  return;
+    }
+  };
 
   useEffect(() => {
-    let colorbg = new Color4Bg.BlurGradientBg({
+    let colorBg = new Color4Bg.BlurGradientBg({
       dom: 'login-bg',
       colors: ['#4098DB', '#ECF3FC', '#C1EBFB', '#A9E0F8'],
       loop: true,
       vUv: 0,
     });
-    colorbg.update('noise', 0);
+    colorBg.update('noise', 0);
   }, []);
 
   return (
@@ -113,7 +104,7 @@ const Login: React.FC = () => {
           padding: '32px 0',
         }}
       >
-        <LoginForm
+        <LoginForm<API.LoginUserDto>
           contentStyle={{
             minWidth: 280,
             maxWidth: '75vw',
@@ -121,9 +112,7 @@ const Login: React.FC = () => {
           logo={<img alt="logo" src="/logo.png" />}
           title="「静夜聆雨」管理后台"
           subTitle={<i>Per Aspera Ad Astra.</i>}
-          onFinish={async (_values) => {
-            // await handleSubmit(values as API.LoginParams);
-          }}
+          onFinish={handleSubmit}
         >
           <Tabs
             activeKey={type}
