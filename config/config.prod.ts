@@ -9,5 +9,6 @@ export const API_URL = 'http://101.37.35.136:9091'; // API地址
 export default defineConfig({
   define: {
     API_URL,
+    ADMIN_EMAIL: '1450820572@qq.com',
   },
 });

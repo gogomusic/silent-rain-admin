@@ -1,15 +1,14 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message } from 'antd';
-import type { HttpStatus } from '@nestjs/common';
+import { getToken } from './utils';
 
 /** 与后端约定的响应数据格式 */
 interface ResponseStructure<T = any> {
   data?: T;
-  code: HttpStatus;
+  code: number;
   msg: string;
   success: boolean;
-  timestamp: number;
 }
 
 /**
@@ -61,7 +60,17 @@ export const requestConfig: RequestConfig = {
     (config: RequestOptions) => {
       // 拦截请求配置，进行个性化处理。
       const url = config?.url;
-      return { ...config, url, baseURL: '/api' };
+      const token = getToken();
+      const Authorization = token ? `Bearer ${token}` : undefined;
+      return {
+        ...config,
+        url,
+        baseURL: '/api',
+        headers: {
+          ...config.headers,
+          Authorization,
+        },
+      } as RequestOptions;
     },
   ],
 
@@ -69,11 +78,10 @@ export const requestConfig: RequestConfig = {
   responseInterceptors: [
     (response) => {
       const data = { ...response.data } as ResponseStructure & { message?: string };
-      const { code, message: msg, timestamp, success } = data;
+      const { code, message: msg, success } = data;
       const newData = {
         code,
         msg,
-        timestamp,
         data: data.data,
         success,
       } as ResponseStructure;

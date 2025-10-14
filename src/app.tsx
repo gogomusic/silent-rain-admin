@@ -3,11 +3,13 @@ import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
-import { history, Link } from '@umijs/max';
+import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { requestConfig } from './requestConfig';
 import React from 'react';
-const isDev = process.env.NODE_ENV === 'development';
+import { userControllerFindCurrent } from './services/silent-rain-admin/user';
+
+const isDev = NODE_ENV === 'development';
 
 const loginPath = '/user/login';
 const registerPath = '/user/register';
@@ -17,25 +19,22 @@ const registerPath = '/user/register';
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: API.CurrentUserInfoDto;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchUserInfo?: () => Promise<API.CurrentUserInfoDto | undefined>;
 }> {
   const fetchUserInfo = async () => {
-    // try {
-    //   const msg = await queryCurrentUser({
-    //     skipErrorHandler: true,
-    //   });
-    //   return msg.data;
-    // } catch (error) {
-    //   console.error(error);
-    //   history.push(loginPath);
-    // }
+    try {
+      const { success, data } = await userControllerFindCurrent();
+      if (success) return data;
+    } catch (error) {
+      console.error(error);
+      history.push(loginPath);
+    }
     return undefined;
   };
-  // 如果不是登录页面，执行
   const { location } = history;
-  if (location.pathname !== loginPath) {
+  if (![registerPath, loginPath].includes(location.pathname)) {
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
@@ -62,7 +61,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       },
     },
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: initialState?.currentUser?.nickname,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
@@ -94,10 +93,10 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     ],
     links: isDev
       ? [
-          <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
+          <a key="openapi" href={`${API_URL}/api`} target="_blank" rel="noreferrer">
             <LinkOutlined />
             <span>OpenAPI 文档</span>
-          </Link>,
+          </a>,
         ]
       : [],
     menuHeaderRender: undefined,

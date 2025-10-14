@@ -1,5 +1,9 @@
 const Dashboard: React.FC = () => {
-  return <>仪表盘</>;
+  return (
+    <>
+      <div style={{ width: '100%' }}>仪表盘</div>
+    </>
+  );
 };
 
 export default Dashboard;

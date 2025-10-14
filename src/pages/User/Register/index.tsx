@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { createStyles } from 'antd-style';
 import api from '@/services/silent-rain-admin';
-import { Helmet, history } from '@umijs/max';
+import { Helmet, history, useModel } from '@umijs/max';
 import Settings from '../../../../config/defaultSettings';
 import { sysControllerRegister } from '@/services/silent-rain-admin/sys';
-
-const codeTimeout = 60 - 1; // 验证码有效时间，单位秒
+import { rsaEncrypt } from '@/utils';
+import { useCountDown } from '@/hooks/useCountDown';
 
 const useStyles = createStyles(() => {
   return {
@@ -64,9 +64,8 @@ const Register: React.FC = () => {
   const [form] = Form.useForm();
   const { styles } = useStyles();
   const email = Form.useWatch('email', form);
-  const [emailLoading, setEmailLoading] = React.useState(false);
-  const [emailSecond, setEmailSecond] = React.useState(codeTimeout);
-  const timerRef = React.useRef<number | null>(null);
+  const { rsaKey } = useModel('rsa');
+  const { startCountDown, loading, stopCountDown, second } = useCountDown();
 
   useEffect(() => {
     let colorBg = new Color4Bg.BlurGradientBg({
@@ -78,35 +77,26 @@ const Register: React.FC = () => {
     colorBg.update('noise', 0);
   }, []);
 
-  const startEmailLoading = () => {
-    setEmailLoading(true);
-    timerRef.current = window.setInterval(() => {
-      setEmailSecond((prev) => {
-        if (prev <= 0) {
-          if (timerRef.current) clearInterval(timerRef.current);
-          setEmailLoading(false);
-          return codeTimeout;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-  const stopEmailLoading = () => {
-    setEmailLoading(false);
-    setEmailSecond(codeTimeout);
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  };
-
   const onFinish = async (values: API.CreateUserDto) => {
-    const { success } = await sysControllerRegister(values);
-    if (success) {
-      message.success('注册成功，即将返回登录页');
-      setTimeout(() => {
-        history.push('/user/login');
-      }, 1000);
+    if (values.password !== values.confirm) {
+      message.error('两次输入的密码不一致');
+      return;
+    }
+    const { public_key, key_id } = rsaKey;
+    const password = rsaEncrypt(values.password, public_key!);
+    if (password && key_id) {
+      const { success } = await sysControllerRegister({
+        ...values,
+        password,
+        confirm: password,
+        key_id,
+      });
+      if (success) {
+        message.success('注册成功，即将返回登录页');
+        setTimeout(() => {
+          history.push('/user/login');
+        }, 1000);
+      }
     }
   };
 
@@ -134,6 +124,17 @@ const Register: React.FC = () => {
             <Input placeholder="请输入用户名" />
           </Form.Item>
           <Form.Item
+            label="昵称"
+            name="nickname"
+            rules={[
+              { required: true, message: '请输入昵称' },
+              { min: 1, message: '昵称至少1个字符' },
+              { max: 24, message: '昵称最多24个字符' },
+            ]}
+          >
+            <Input placeholder="请输入昵称" />
+          </Form.Item>
+          <Form.Item
             label="邮箱"
             name="email"
             rules={[
@@ -149,6 +150,11 @@ const Register: React.FC = () => {
             rules={[
               { required: true, message: '请输入密码' },
               { min: 6, message: '密码至少6位' },
+              { max: 32, message: '密码最多32位' },
+              {
+                pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/,
+                message: '密码至少包含字母和数字',
+              },
             ]}
           >
             <Input.Password placeholder="请输入密码" />
@@ -188,25 +194,23 @@ const Register: React.FC = () => {
             <Button
               type="primary"
               style={{ padding: '0 8px' }}
-              disabled={!email || emailLoading}
+              disabled={!email || loading}
               onClick={async () => {
                 if (!form.getFieldValue('email')) {
                   message.warning('请先输入邮箱');
                   return;
                 }
                 try {
-                  startEmailLoading();
+                  startCountDown();
                   await api.sys.sysControllerRegisterCode({ email });
                   message.success('验证码已发送');
                 } catch (_error) {
-                  stopEmailLoading();
+                  stopCountDown();
                 } finally {
                 }
               }}
             >
-              <span className={styles['code-text']}>
-                {emailLoading ? `${emailSecond}s` : '获取验证码'}
-              </span>
+              <span className={styles['code-text']}>{loading ? `${second}s` : '获取验证码'}</span>
             </Button>
           </Form.Item>
           <br />

@@ -1,13 +1,14 @@
 import { Footer } from '@/components';
-
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
-import { history, Helmet } from '@umijs/max';
-import { message, Tabs } from 'antd';
+import { history, Helmet, useModel } from '@umijs/max';
+import { message, Modal, Tabs } from 'antd';
 import Settings from '../../../../config/defaultSettings';
 import React, { useEffect } from 'react';
 import { createStyles } from 'antd-style';
-import { sysControllerLogin } from '@/services/silent-rain-admin/sys';
+import { userControllerLogin } from '@/services/silent-rain-admin/user';
+import { flushSync } from 'react-dom';
+import { getToken, rsaEncrypt, setToken } from '@/utils';
 
 const useStyles = createStyles(({ token }) => {
   return {
@@ -51,36 +52,50 @@ const useStyles = createStyles(({ token }) => {
 });
 
 const Login: React.FC = () => {
-  // const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const type = 'account';
-  // const { initialState, setInitialState } = useModel('@@initialState');
+  const { initialState, setInitialState } = useModel('@@initialState');
   const { styles } = useStyles();
-  // const intl = useIntl();
+  const { rsaKey } = useModel('rsa');
 
-  // const fetchUserInfo = async () => {
-  //   const userInfo = await initialState?.fetchUserInfo?.();
-  //   if (userInfo) {
-  //     flushSync(() => {
-  //       setInitialState((s) => ({
-  //         ...s,
-  //         currentUser: userInfo,
-  //       }));
-  //     });
-  //   }
-  // };
+  const fetchUserInfo = async () => {
+    const userInfo = await initialState?.fetchUserInfo?.();
+    if (userInfo) {
+      flushSync(() => {
+        setInitialState((s) => ({
+          ...s,
+          currentUser: userInfo,
+        }));
+      });
+    }
+    return { success: !!userInfo };
+  };
 
-  const handleSubmit = async (values: API.LoginUserDto) => {
-    const { success, data: token } = await sysControllerLogin(values);
+  const jump = async () => {
+    const { success } = await fetchUserInfo();
     if (success) {
-      const defaultLoginSuccessMessage = '登录成功！';
-      message.success(defaultLoginSuccessMessage);
-      console.log(token);
-      //  await fetchUserInfo();
-      //  const urlParams = new URL(window.location.href).searchParams;
-      //  history.push(urlParams.get('redirect') || '/');
-      //  return;
+      const urlParams = new URL(window.location.href).searchParams;
+      history.push(urlParams.get('redirect') || '/');
     }
   };
+
+  const handleSubmit = async (values: API.LoginUserDto) => {
+    const { public_key, key_id } = rsaKey;
+    const password = rsaEncrypt(values.password, public_key!);
+    if (password && key_id) {
+      const { success, data: token } = await userControllerLogin({ ...values, password, key_id });
+      if (success) {
+        setToken(token!);
+        const defaultLoginSuccessMessage = '登录成功！';
+        message.success(defaultLoginSuccessMessage);
+        jump();
+      }
+    }
+  };
+
+  useEffect(() => {
+    const token = getToken();
+    if (token) jump();
+  }, []);
 
   useEffect(() => {
     let colorBg = new Color4Bg.BlurGradientBg({
@@ -164,7 +179,23 @@ const Login: React.FC = () => {
             >
               <a onClick={() => history.push('/user/register')}>注册账户</a>
               &nbsp;&nbsp;
-              <a>忘记密码</a>
+              <a
+                onClick={() => {
+                  Modal.info({
+                    title: '忘记密码了？',
+                    centered: true,
+                    content: (
+                      <div>
+                        请联系管理员
+                        <a href={`mailto:${ADMIN_EMAIL}`}>{ADMIN_EMAIL}</a>找回密码。
+                      </div>
+                    ),
+                    onOk() {},
+                  });
+                }}
+              >
+                忘记密码
+              </a>
             </div>
           </div>
           <br />

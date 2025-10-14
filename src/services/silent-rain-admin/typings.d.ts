@@ -1,5 +1,13 @@
 declare namespace API {
+  type Array = {};
+
+  type CreateRoleDto = {};
+
   type CreateUserDto = {
+    /** RSA公钥唯一标识 */
+    key_id: string;
+    /** RSA公钥 */
+    public_key: string;
     /** 用户名 */
     username: string;
     /** 密码 */
@@ -12,64 +20,38 @@ declare namespace API {
     captcha: string;
   };
 
-  type HttpStatus =
-    | 100
-    | 101
-    | 102
-    | 103
-    | 200
-    | 201
-    | 202
-    | 203
-    | 204
-    | 205
-    | 206
-    | 207
-    | 208
-    | 210
-    | 300
-    | 301
-    | 302
-    | 303
-    | 304
-    | 307
-    | 308
-    | 400
-    | 401
-    | 402
-    | 403
-    | 404
-    | 405
-    | 406
-    | 407
-    | 408
-    | 409
-    | 410
-    | 411
-    | 412
-    | 413
-    | 414
-    | 415
-    | 416
-    | 417
-    | 418
-    | 421
-    | 422
-    | 423
-    | 424
-    | 428
-    | 429
-    | 456
-    | 500
-    | 501
-    | 502
-    | 503
-    | 504
-    | 505
-    | 507
-    | 508;
+  type CurrentUserInfoDto = {
+    /** id */
+    id: number;
+    /** 用户名 */
+    username: string;
+    /** 昵称 */
+    nickname: string;
+    /** 邮箱 */
+    email: string;
+    /** 用户类型 0超级管理员 1普通用户 */
+    user_type: number;
+    /** 用户状态 0停用 1启用 */
+    status: number;
+    /** 角色 */
+    roles: string[];
+    /** 头像 */
+    avatar: number;
+    /** 描述 */
+    description: string;
+    /** 创建时间 */
+    create_time: string;
+    /** 更新时间 */
+    update_time: string;
+    /** 权限 */
+    permissions: string[];
+  };
 
   type LoginUserDto = {
+    /** RSA公钥唯一标识 */
+    key_id: string;
+    /** RSA公钥 */
+    public_key: string;
     /** 用户名 */
     username: string;
     /** 密码 */
@@ -78,20 +60,72 @@ declare namespace API {
 
   type ResponseDto = {
     /** 响应状态码 */
-    code: HttpStatus;
+    code: number;
     /** 响应数据 */
     data?: Record<string, any>;
     /** 响应消息 */
     message: string;
-    /** 响应时间戳 */
-    timestamp: number;
     /** 请求是否成功 */
     success: boolean;
   };
 
+  type RoleControllerFindOneParams = {
+    id: string;
+  };
+
+  type RoleControllerRemoveParams = {
+    id: string;
+  };
+
+  type RoleControllerUpdateParams = {
+    id: string;
+  };
+
+  type RsaDto = {
+    /** RSA公钥唯一标识 */
+    key_id: string;
+    /** RSA公钥 */
+    public_key: string;
+  };
+
   type String = {};
+
+  type SysControllerGetPublicKeyParams = {
+    key_id: string;
+  };
 
   type SysControllerRegisterCodeParams = {
     email: string;
+  };
+
+  type UpdateRoleDto = {};
+
+  type UserControllerFindOneParams = {
+    id: string;
+  };
+
+  type UserInfoDto = {
+    /** id */
+    id: number;
+    /** 用户名 */
+    username: string;
+    /** 昵称 */
+    nickname: string;
+    /** 邮箱 */
+    email: string;
+    /** 用户类型 0超级管理员 1普通用户 */
+    user_type: number;
+    /** 用户状态 0停用 1启用 */
+    status: number;
+    /** 角色 */
+    roles: string[];
+    /** 头像 */
+    avatar: number;
+    /** 描述 */
+    description: string;
+    /** 创建时间 */
+    create_time: string;
+    /** 更新时间 */
+    update_time: string;
   };
 }
