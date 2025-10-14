@@ -20,7 +20,9 @@ export default () => {
     localStorage.setItem(LocalRsaKey, key_id || '');
   };
   useEffect(() => {
-    fetchRsaKey();
+    setTimeout(() => {
+      fetchRsaKey();
+    }, 1000);
   }, []);
   return { rsaKey };
 };

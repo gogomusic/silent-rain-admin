@@ -25,10 +25,21 @@ export async function userControllerFindOne(
   });
 }
 
-/** 用户列表 GET /user/list */
-export async function userControllerList(options?: { [key: string]: any }) {
-  return request<API.ResponseDto & { data?: API.Array }>('/user/list', {
-    method: 'GET',
+/** 用户列表 POST /user/list */
+export async function userControllerList(
+  body: API.UserListReqDto,
+  options?: { [key: string]: any },
+) {
+  return request<
+    API.ResponseDto & {
+      data?: { list?: API.UserInfoDto[]; current?: number; pageSize?: number; total?: number };
+    }
+  >('/user/list', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }

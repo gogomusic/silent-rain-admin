@@ -34,6 +34,53 @@ export default [
     component: './Dashboard',
   },
   {
+    path: '/system',
+    name: '系统管理',
+    icon: 'setting',
+    routes: [
+      {
+        path: '/system',
+        redirect: '/system/user-management',
+      },
+      {
+        path: '/system/personal-center',
+        name: '个人中心',
+        component: './System/PersonalCenter',
+      },
+      {
+        path: '/system/user-management',
+        name: '用户管理',
+        component: './System/UserManagement',
+      },
+      // {
+      //   path: '/system/role-management',
+      //   name: '角色管理',
+      //   component: './System/RoleManagement',
+      // },
+
+      // {
+      //   path: '/system/menu-management',
+      //   name: '菜单管理',
+      //   component: './System/MenuManagement',
+      // },
+      // {
+      //   path: '/system/action-log',
+      //   name: '操作日志',
+      //   component: './System/ActionLog',
+      // },
+      // {
+      //   path: '/system/login-log',
+      //   name: '登录日志',
+      //   component: './System/LoginLog',
+      // },
+      // {
+      //   path: '/system/version-log',
+      //   name: '更新日志',
+      //   component: './System/VersionLog',
+      // },
+    ],
+  },
+  {
     path: '/',
     redirect: '/dashboard',
   },

@@ -1,8 +1,4 @@
 declare namespace API {
-  type Array = {};
-
-  type CreateRoleDto = {};
-
   type CreateUserDto = {
     /** RSA公钥唯一标识 */
     key_id: string;
@@ -77,10 +73,6 @@ declare namespace API {
     id: string;
   };
 
-  type RoleControllerUpdateParams = {
-    id: string;
-  };
-
   type RsaDto = {
     /** RSA公钥唯一标识 */
     key_id: string;
@@ -97,8 +89,6 @@ declare namespace API {
   type SysControllerRegisterCodeParams = {
     email: string;
   };
-
-  type UpdateRoleDto = {};
 
   type UserControllerFindOneParams = {
     id: string;
@@ -127,5 +117,14 @@ declare namespace API {
     create_time: string;
     /** 更新时间 */
     update_time: string;
+  };
+
+  type UserListReqDto = {
+    /** 页码 */
+    current: number;
+    /** 分页大小 */
+    pageSize: number;
+    /** 用户名 */
+    username: string;
   };
 }

@@ -13,7 +13,7 @@ const Settings: ProLayoutProps & {
   colorWeak: false,
   title: '「静夜聆雨」管理后台',
   pwa: true,
-  logo: 'favicon.ico',
+  logo: '/favicon.ico',
   iconfontUrl: '',
   token: {
     // 参见ts声明，demo 见文档，通过token 修改样式
