@@ -66,3 +66,18 @@ export async function userControllerLogout(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+
+/** 修改个人资料 POST /user/updateSelf */
+export async function userControllerUpdateSelf(
+  body: API.UpdateSelfDto,
+  options?: { [key: string]: any },
+) {
+  return request<API.ResponseDto>('/user/updateSelf', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

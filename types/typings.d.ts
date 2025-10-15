@@ -25,3 +25,8 @@ declare const ADMIN_EMAIL: string;
 declare const Color4Bg = {
   BlurGradientBg: any,
 };
+
+declare interface Window {
+  /** 忽略的错误信息 */
+  IGNORED_ERRORS: string[];
+}

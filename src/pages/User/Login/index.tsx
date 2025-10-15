@@ -2,7 +2,7 @@ import { Footer } from '@/components';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { history, Helmet, useModel } from '@umijs/max';
-import { message, Modal, Tabs } from 'antd';
+import { App, Modal, Tabs } from 'antd';
 import Settings from '../../../../config/defaultSettings';
 import React, { useEffect } from 'react';
 import { createStyles } from 'antd-style';
@@ -56,6 +56,7 @@ const Login: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const { styles } = useStyles();
   const { rsaKey } = useModel('rsa');
+  const { message } = App.useApp();
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();

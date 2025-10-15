@@ -33,6 +33,8 @@ declare namespace API {
     roles: string[];
     /** 头像 */
     avatar: number;
+    /** 头像详情 */
+    avatar_info: FileBaseDto;
     /** 描述 */
     description: string;
     /** 创建时间 */
@@ -41,6 +43,15 @@ declare namespace API {
     update_time: string;
     /** 权限 */
     permissions: string[];
+  };
+
+  type FileBaseDto = {
+    /** 文件ID */
+    file_id: number;
+    /** 文件路径 */
+    file_path: string;
+    /** 原始文件名 */
+    file_original_name: string;
   };
 
   type LoginUserDto = {
@@ -60,7 +71,7 @@ declare namespace API {
     /** 响应数据 */
     data?: Record<string, any>;
     /** 响应消息 */
-    message: string;
+    msg: string;
     /** 请求是否成功 */
     success: boolean;
   };
@@ -90,6 +101,21 @@ declare namespace API {
     email: string;
   };
 
+  type UpdateSelfDto = {
+    /** id */
+    id: number;
+    /** 用户名 */
+    username: string;
+    /** 昵称 */
+    nickname: string;
+    /** 邮箱 */
+    email: string;
+    /** 头像 */
+    avatar?: number;
+    /** 描述 */
+    description?: string;
+  };
+
   type UserControllerFindOneParams = {
     id: string;
   };
@@ -111,6 +137,8 @@ declare namespace API {
     roles: string[];
     /** 头像 */
     avatar: number;
+    /** 头像详情 */
+    avatar_info: FileBaseDto;
     /** 描述 */
     description: string;
     /** 创建时间 */

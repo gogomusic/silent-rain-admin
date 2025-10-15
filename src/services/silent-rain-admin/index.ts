@@ -5,8 +5,10 @@
 import * as sys from './sys';
 import * as user from './user';
 import * as role from './role';
+import * as file from './file';
 export default {
   sys,
   user,
   role,
+  file,
 };

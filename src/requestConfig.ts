@@ -1,7 +1,7 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
-import { message } from 'antd';
 import { getToken } from './utils';
+import { message } from 'antd';
 
 /** 与后端约定的响应数据格式 */
 interface ResponseStructure<T = any> {
@@ -10,6 +10,26 @@ interface ResponseStructure<T = any> {
   msg: string;
   success: boolean;
 }
+
+/** 提交`FormData`数据时，进行排序，将`file`字段排序到最后
+ *
+ * 这么做是因为后端采用了`Multer`中间件处理文件上传，其在读取`req.body`时，如果`file`是第一个字段，则无法读取到后续字段
+ */
+const formdataSort = (formData: FormData) => {
+  let data = formData;
+  if (formData instanceof FormData) {
+    const newFormData = new FormData();
+    const entries = Array.from(formData.entries());
+    entries
+      .filter(([key]) => key !== 'file')
+      .forEach(([key, value]) => newFormData.append(key, value));
+    entries
+      .filter(([key]) => key === 'file')
+      .forEach(([key, value]) => newFormData.append(key, value));
+    data = newFormData;
+  }
+  return data;
+};
 
 /**
  * @name 错误处理
@@ -58,13 +78,13 @@ export const requestConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-      // 拦截请求配置，进行个性化处理。
       const url = config?.url;
       const token = getToken();
       const Authorization = token ? `Bearer ${token}` : undefined;
       return {
         ...config,
         url,
+        data: formdataSort(config.data),
         baseURL: '/api',
         headers: {
           ...config.headers,
@@ -78,11 +98,11 @@ export const requestConfig: RequestConfig = {
   responseInterceptors: [
     (response) => {
       const data = { ...response.data } as ResponseStructure & { message?: string };
-      const { code, message: msg, success } = data;
+      const { code, msg, success } = data;
       const newData = {
         code,
-        msg,
         data: data.data,
+        msg,
         success,
       } as ResponseStructure;
       return {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, App } from 'antd';
 import { createStyles } from 'antd-style';
 import api from '@/services/silent-rain-admin';
 import { Helmet, history, useModel } from '@umijs/max';
@@ -66,6 +66,7 @@ const Register: React.FC = () => {
   const email = Form.useWatch('email', form);
   const { rsaKey } = useModel('rsa');
   const { startCountDown, loading, stopCountDown, second } = useCountDown();
+  const { message } = App.useApp();
 
   useEffect(() => {
     let colorBg = new Color4Bg.BlurGradientBg({
