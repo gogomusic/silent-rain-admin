@@ -68,7 +68,7 @@ export const requestConfig: RequestConfig = {
         }
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        else message.error(error.response.data.message || '服务器错误，请稍后重试');
+        else message.error(error.response.data.msg || '服务器错误，请稍后重试');
       } else if (error.request) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，

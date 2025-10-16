@@ -1,4 +1,11 @@
 declare namespace API {
+  type ChangeStatusDto = {
+    /** id */
+    id: number;
+    /** 用户状态 0停用 1启用 */
+    status: UserStatusEnum;
+  };
+
   type CreateUserDto = {
     /** RSA公钥唯一标识 */
     key_id: string;
@@ -26,9 +33,9 @@ declare namespace API {
     /** 邮箱 */
     email: string;
     /** 用户类型 0超级管理员 1普通用户 */
-    user_type: number;
+    user_type: 0 | 1;
     /** 用户状态 0停用 1启用 */
-    status: number;
+    status: 0 | 1;
     /** 角色 */
     roles: string[];
     /** 头像 */
@@ -130,9 +137,9 @@ declare namespace API {
     /** 邮箱 */
     email: string;
     /** 用户类型 0超级管理员 1普通用户 */
-    user_type: number;
+    user_type: 0 | 1;
     /** 用户状态 0停用 1启用 */
-    status: number;
+    status: 0 | 1;
     /** 角色 */
     roles: string[];
     /** 头像 */
@@ -155,4 +162,6 @@ declare namespace API {
     /** 用户名 */
     username: string;
   };
+
+  type UserStatusEnum = 0 | 1;
 }

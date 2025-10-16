@@ -1,5 +1,5 @@
 import { ProForm } from '@ant-design/pro-components';
-import { App, AutoComplete, Avatar, Button, Card, Form, Input, Space } from 'antd';
+import { App, AutoComplete, Button, Card, Form, Input, Space } from 'antd';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './index.less';
 import banner from '@/assets/images/personal-center-bg.jpg';
@@ -12,6 +12,7 @@ import {
 import CommonFormText from '@/components/CommonFormItem/CommonFormText';
 import AvatarUpload from '@/components/AvatarUpload';
 import CommonFormTextArea from '@/components/CommonFormItem/CommonFormTextArea';
+import AvatarView from '@/components/AvatarView';
 
 const PersonalCenter: React.FC = () => {
   const [formInstance] = Form.useForm<API.UpdateSelfDto>();
@@ -75,13 +76,7 @@ const PersonalCenter: React.FC = () => {
         <img src={banner} alt="personal center" />
         <div className={styles.info}>
           <div className={styles.avatar}>
-            {currentUser?.avatar_info.file_path ? (
-              <img src={API_URL + currentUser?.avatar_info.file_path} />
-            ) : (
-              <Avatar size={64} style={{ backgroundColor: '#87d068' }}>
-                {currentUser?.nickname.charAt(0)}
-              </Avatar>
-            )}
+            <AvatarView isCurrentUser size={64} />
           </div>
           <div className={styles.right}>
             <h2>{currentUser?.nickname}</h2>
@@ -103,7 +98,8 @@ const PersonalCenter: React.FC = () => {
               maxWidth: '400px',
             }}
             scrollToFirstError={true}
-            labelCol={{ span: 8 }}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 16 }}
             rowProps={{
               gutter: 10,
             }}

@@ -13,6 +13,7 @@ import { App, ConfigProvider } from 'antd';
 import { removeToken } from './utils';
 import { isDev, loginPath, registerPath } from './config';
 import EscapeAntd from './components/EscapeAntd';
+import { avatarBgColor } from './components/AvatarView';
 
 ignoreConsoleError();
 
@@ -60,7 +61,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       src: API_URL + initialState?.currentUser?.avatar_info.file_path,
       title: <AvatarName />,
       style: {
-        backgroundColor: '#87d068',
+        backgroundColor: avatarBgColor,
       },
       children: initialState?.currentUser?.avatar
         ? undefined

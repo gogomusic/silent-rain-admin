@@ -2,6 +2,21 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
+/** 修改用户状态 POST /user/changeStatus */
+export async function userControllerChangeStatus(
+  body: API.ChangeStatusDto,
+  options?: { [key: string]: any },
+) {
+  return request<API.ResponseDto>('/user/changeStatus', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 当前登陆用户详情 GET /user/current */
 export async function userControllerFindCurrent(options?: { [key: string]: any }) {
   return request<API.ResponseDto & { data?: API.CurrentUserInfoDto }>('/user/current', {

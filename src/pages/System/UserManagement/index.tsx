@@ -1,8 +1,12 @@
-import { userControllerList } from '@/services/silent-rain-admin/user';
+import AvatarView from '@/components/AvatarView';
+import { userStatusOptions } from '@/options';
+import { userControllerChangeStatus, userControllerList } from '@/services/silent-rain-admin/user';
 import { formatListRes } from '@/utils';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
+import { App, Space } from 'antd';
 import { useRef } from 'react';
+import { Switch } from 'antd';
 
 type TableDataType = API.UserInfoDto;
 type TableSearchParams = API.UserListReqDto;
@@ -12,29 +16,23 @@ const tableTitle = '用户管理';
 /** 用户管理 */
 const UserManagement: React.FC = () => {
   const actionRef = useRef<ActionType>();
+  const { message } = App.useApp();
 
   const columns: ProColumns<TableDataType>[] = [
-    // {
-    //   key: 'avatarInfo',
-    //   title: '头像',
-    //   dataIndex: 'avatarInfo',
-    //   fixed: 'left',
-    //   width: 80,
-    //   align: 'center',
-    //   search: false,
-    //   render: (text, record) => {
-    //     if (record.avatarInfo && record.avatarInfo.length > 0 && record.avatarInfo[0]?.file_path) {
-    //       return <Avatar src={record.avatarInfo?.[0]?.file_path} style={{ width: 32 }} />;
-    //     } else return <Avatar icon={<UserOutlined />} style={{ width: 32 }} />;
-    //   },
-    // },
     {
-      title: '姓名',
+      title: '头像 / 昵称',
       key: 'nickname',
       dataIndex: 'nickname',
+      fixed: 'left',
       align: 'left',
       width: 150,
       search: false,
+      render: (_, record) => (
+        <Space>
+          <AvatarView file_path={record.avatar_info.file_path} />
+          {record.nickname}
+        </Space>
+      ),
     },
     {
       title: '用户名',
@@ -67,41 +65,35 @@ const UserManagement: React.FC = () => {
       search: false,
       width: 180,
     },
-
-    // {
-    //   key: 'status',
-    //   title: '状态',
-    //   dataIndex: 'status',
-    //   align: 'center',
-    //   width: 150,
-    //   render: (text, record) => {
-    //     const color = record.status === 0 ? '#1890ff' : '#CCCCCC';
-    //     const bgColor = record.status === 0 ? '#fff2f0' : '#f6ffed';
-    //     return (
-    //       <div style={{ width: '100%' }}>
-    //         <div
-    //           style={{
-    //             color,
-    //             boxShadow: `0 0 4px ${color}`,
-    //             fontSize: '12px',
-    //             borderRadius: '4px',
-    //             userSelect: 'none',
-    //             padding: '2px 0',
-    //             backgroundColor: bgColor,
-    //             width: '60px',
-    //             margin: '0 auto',
-    //           }}
-    //         >
-    //           {userStatusEnum_CN.find((item) => item.value === record.status)?.label}
-    //         </div>
-    //       </div>
-    //     );
-    //   },
-    //   valueType: 'select',
-    //   fieldProps: {
-    //     options: userStatusEnum_CN,
-    //   },
-    // },
+    {
+      key: 'status',
+      title: '状态',
+      dataIndex: 'status',
+      width: 150,
+      render: (_, record) => {
+        return (
+          <Switch
+            checkedChildren="启用"
+            unCheckedChildren="停用"
+            checked={record.status === 1}
+            onChange={async (c) => {
+              const { success } = await userControllerChangeStatus({
+                id: record.id,
+                status: c ? 1 : 0,
+              });
+              if (success) {
+                message.success('操作成功');
+              }
+              actionRef.current?.reload();
+            }}
+          />
+        );
+      },
+      valueType: 'select',
+      fieldProps: {
+        options: userStatusOptions,
+      },
+    },
     {
       title: '更新时间',
       key: 'update_time',
