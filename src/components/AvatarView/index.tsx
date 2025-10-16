@@ -26,13 +26,17 @@ const AvatarView: React.FC<AvatarViewProps> = ({
     return <Avatar src={API_URL + path} size={size} />;
   } else if (name)
     return (
-      <Avatar size={32} style={{ backgroundColor: avatarBgColor }}>
+      <Avatar size={size} style={{ backgroundColor: avatarBgColor }}>
         {name?.charAt(0)}
       </Avatar>
     );
   else
     return (
-      <Avatar size={32} icon={<UserOutlined />} style={{ backgroundColor: avatarBgColor }}></Avatar>
+      <Avatar
+        size={size}
+        icon={<UserOutlined />}
+        style={{ backgroundColor: avatarBgColor }}
+      ></Avatar>
     );
 };
 

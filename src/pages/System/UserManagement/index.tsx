@@ -29,7 +29,7 @@ const UserManagement: React.FC = () => {
       search: false,
       render: (_, record) => (
         <Space>
-          <AvatarView file_path={record.avatar_info.file_path} />
+          <AvatarView file_path={record.avatar_info.file_path} nickname={record.nickname} />
           {record.nickname}
         </Space>
       ),
