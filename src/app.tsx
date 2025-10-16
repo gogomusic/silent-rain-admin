@@ -2,19 +2,17 @@ import { Footer, AvatarDropdown, AvatarName } from '@/components';
 import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
-import type { RunTimeLayoutConfig } from '@umijs/max';
+import type { RuntimeConfig, RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { requestConfig } from './requestConfig';
 import React from 'react';
 import { userControllerFindCurrent } from './services/silent-rain-admin/user';
 import { ignoreConsoleError } from './utils/console';
-import { App } from 'antd';
-
-const isDev = NODE_ENV === 'development';
-
-const loginPath = '/user/login';
-const registerPath = '/user/register';
+import { App, ConfigProvider } from 'antd';
+import { removeToken } from './utils';
+import { isDev, loginPath, registerPath } from './config';
+import EscapeAntd from './components/EscapeAntd';
 
 ignoreConsoleError();
 
@@ -33,6 +31,7 @@ export async function getInitialState(): Promise<{
       if (success) return data;
     } catch (error) {
       console.error(error);
+      removeToken();
       history.push(loginPath);
     }
     return undefined;
@@ -60,6 +59,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     avatarProps: {
       src: API_URL + initialState?.currentUser?.avatar_info.file_path,
       title: <AvatarName />,
+      style: {
+        backgroundColor: '#87d068',
+      },
+      children: initialState?.currentUser?.avatar
+        ? undefined
+        : initialState?.currentUser?.nickname.charAt(0),
       render: (_: any, avatarChildren: any) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
@@ -108,7 +113,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // unAccessible: <div>unAccessible</div>,
     childrenRender: (children) => {
       return (
-        <App>
+        <>
           {children}
           {isDev && (
             <SettingDrawer
@@ -123,7 +128,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
               }}
             />
           )}
-        </App>
+        </>
       );
     },
     ...initialState?.settings,
@@ -137,4 +142,15 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
  */
 export const request = {
   ...requestConfig,
+};
+
+export const rootContainer: RuntimeConfig['rootContainer'] = (container) => {
+  return (
+    <ConfigProvider>
+      <App>
+        {container}
+        <EscapeAntd />
+      </App>
+    </ConfigProvider>
+  );
 };

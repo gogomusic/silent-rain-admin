@@ -75,8 +75,9 @@ const PersonalCenter: React.FC = () => {
         <img src={banner} alt="personal center" />
         <div className={styles.info}>
           <div className={styles.avatar}>
-            <img src={API_URL + currentUser?.avatar_info.file_path} />
-            {!currentUser?.avatar_info.file_path && (
+            {currentUser?.avatar_info.file_path ? (
+              <img src={API_URL + currentUser?.avatar_info.file_path} />
+            ) : (
               <Avatar size={64} style={{ backgroundColor: '#87d068' }}>
                 {currentUser?.nickname.charAt(0)}
               </Avatar>

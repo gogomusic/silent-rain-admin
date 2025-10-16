@@ -1,7 +1,8 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
-import { getToken } from './utils';
-import { message } from 'antd';
+import { getToken, removeToken } from './utils';
+import { history } from '@umijs/max';
+import { message } from '@/components/EscapeAntd';
 
 /** 与后端约定的响应数据格式 */
 interface ResponseStructure<T = any> {
@@ -60,9 +61,14 @@ export const requestConfig: RequestConfig = {
           message.error(msg);
         }
       } else if (error.response) {
+        if (error.response.status === 401) {
+          history.push('/user/login');
+          removeToken();
+          message.error('登录已过期，请重新登录');
+        }
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        message.error(error.response.data.message || '服务器错误，请稍后重试');
+        else message.error(error.response.data.message || '服务器错误，请稍后重试');
       } else if (error.request) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
@@ -70,7 +76,7 @@ export const requestConfig: RequestConfig = {
         message.error('服务器无响应，请检查网络或稍后重试');
       } else {
         // 发送请求时出了点问题
-        message.error('请求失败，请重试');
+        message.error(error.message || '请求失败，请重试');
       }
     },
   },
@@ -81,6 +87,7 @@ export const requestConfig: RequestConfig = {
       const url = config?.url;
       const token = getToken();
       const Authorization = token ? `Bearer ${token}` : undefined;
+
       return {
         ...config,
         url,
@@ -105,6 +112,7 @@ export const requestConfig: RequestConfig = {
         msg,
         success,
       } as ResponseStructure;
+
       return {
         ...response,
         data: newData,

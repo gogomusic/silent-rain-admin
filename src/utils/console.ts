@@ -12,7 +12,8 @@ export const ignoreConsoleError = () => {
   const originalConsoleError = console.error;
 
   console.error = function filterErrors(msg, ...args) {
-    if (!window.IGNORED_ERRORS.some((error) => msg.includes(error)))
+    if (typeof msg !== 'string') originalConsoleError(msg, ...args);
+    else if (!window.IGNORED_ERRORS.some((error) => msg.includes(error)))
       originalConsoleError(msg, ...args);
   };
 };
