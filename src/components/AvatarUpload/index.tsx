@@ -21,8 +21,9 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ value, onChange, maxSize, r
 
   const onModalOk = async (value: ReturnType<Exclude<UploadProps['beforeUpload'], undefined>>) => {
     if (value instanceof File) {
-      const { code, data } = await fileControllerUploadFile({ module: 'avatar' }, value);
-      if (code === 200) {
+      const { success, data } = await fileControllerUploadFile({ module: 'avatar' }, value);
+      console.log(data);
+      if (success) {
         message.success('上传成功！');
         fileList.splice(0, fileList.length);
         onChange?.({
@@ -33,6 +34,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ value, onChange, maxSize, r
       }
     }
   };
+  console.log(value?.file_id);
   useEffect(() => {
     if (value?.file_path) {
       setImageUrl(API_URL + value.file_path);

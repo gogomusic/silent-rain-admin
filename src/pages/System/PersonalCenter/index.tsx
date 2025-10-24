@@ -18,7 +18,7 @@ const PersonalCenter: React.FC = () => {
   const [formInstance] = Form.useForm<API.UpdateSelfDto>();
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
-  const initialData = useRef<API.CurrentUserInfoDto>();
+  const initialData = useRef<API.CurrentUserInfoResDto>();
   const autoCompleteCfg = useAutoCompleteEmail();
   const { initialState, setInitialState } = useModel('@@initialState');
   const { message } = App.useApp();

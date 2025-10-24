@@ -63,16 +63,16 @@ export default [
       //   name: '菜单管理',
       //   component: './System/MenuManagement',
       // },
-      // {
-      //   path: '/system/action-log',
-      //   name: '操作日志',
-      //   component: './System/ActionLog',
-      // },
-      // {
-      //   path: '/system/login-log',
-      //   name: '登录日志',
-      //   component: './System/LoginLog',
-      // },
+      {
+        path: '/system/login-log',
+        name: '登录日志',
+        component: './System/LoginLog',
+      },
+      {
+        path: '/system/operation-log',
+        name: '操作日志',
+        component: './System/OperationLog',
+      },
       // {
       //   path: '/system/version-log',
       //   name: '更新日志',

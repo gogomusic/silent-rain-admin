@@ -64,7 +64,7 @@ const Register: React.FC = () => {
   const [form] = Form.useForm();
   const { styles } = useStyles();
   const email = Form.useWatch('email', form);
-  const { rsaKey } = useModel('rsa');
+  const { public_key } = useModel('rsa');
   const { startCountDown, loading, stopCountDown, second } = useCountDown();
   const { message } = App.useApp();
 
@@ -83,14 +83,12 @@ const Register: React.FC = () => {
       message.error('两次输入的密码不一致');
       return;
     }
-    const { public_key, key_id } = rsaKey;
     const password = rsaEncrypt(values.password, public_key!);
-    if (password && key_id) {
+    if (password) {
       const { success } = await sysControllerRegister({
         ...values,
         password,
         confirm: password,
-        key_id,
       });
       if (success) {
         message.success('注册成功，即将返回登录页');

@@ -7,10 +7,6 @@ declare namespace API {
   };
 
   type CreateUserDto = {
-    /** RSA公钥唯一标识 */
-    key_id: string;
-    /** RSA公钥 */
-    public_key: string;
     /** 用户名 */
     username: string;
     /** 密码 */
@@ -23,7 +19,7 @@ declare namespace API {
     captcha: string;
   };
 
-  type CurrentUserInfoDto = {
+  type CurrentUserInfoResDto = {
     /** id */
     id: number;
     /** 用户名 */
@@ -61,15 +57,109 @@ declare namespace API {
     file_original_name: string;
   };
 
+  type LoginLogListDto = {
+    /** 页码 */
+    current: number;
+    /** 分页大小 */
+    pageSize: number;
+    /** 用户名 */
+    username: string;
+    /** 昵称 */
+    nickname: string;
+    /** 年份 */
+    year: number;
+    /** 开始日期 */
+    start_date: string;
+    /** 结束日期 */
+    end_date: string;
+  };
+
+  type LoginLogResDto = {
+    /** id */
+    id: number;
+    /** 用户ID */
+    user_id: number;
+    /** 用户名 */
+    username: string;
+    /** 昵称 */
+    nickname: string;
+    /** 登录类型 0退出系统 1登录系统 */
+    type: 0 | 1;
+    /** IP地址 */
+    ip: string;
+    /** 设备 */
+    device: string;
+    /** 浏览器 */
+    browser: string;
+    /** 操作系统 */
+    os: string;
+    /** 用户代理 */
+    user_agent: string;
+    /** 创建时间 */
+    create_time: string;
+  };
+
   type LoginUserDto = {
-    /** RSA公钥唯一标识 */
-    key_id: string;
-    /** RSA公钥 */
-    public_key: string;
     /** 用户名 */
     username: string;
     /** 密码 */
     password: string;
+  };
+
+  type OperationLogListDto = {
+    /** 页码 */
+    current: number;
+    /** 分页大小 */
+    pageSize: number;
+    /** 用户名 */
+    username: string;
+    /** 昵称 */
+    nickname: string;
+    /** 年份 */
+    year: number;
+    /** 开始日期 */
+    start_date: string;
+    /** 结束日期 */
+    end_date: string;
+  };
+
+  type OperationLogResDto = {
+    /** id */
+    id: number;
+    /** 用户ID */
+    user_id: number;
+    /** 用户名 */
+    username: string;
+    /** 昵称 */
+    nickname: string;
+    /** 模块 */
+    module: string;
+    /** 操作 */
+    action: string;
+    /** 请求方式 */
+    method: string;
+    /** 请求接口 */
+    url: string;
+    /** 请求参数 */
+    params: string;
+    /** 操作结果 */
+    status: 0 | 1;
+    /** 响应时间（ms） */
+    duration: number;
+    /** 异常信息 */
+    fail_result: string;
+    /** IP地址 */
+    ip: string;
+    /** 设备 */
+    device: string;
+    /** 浏览器 */
+    browser: string;
+    /** 操作系统 */
+    os: string;
+    /** 用户代理 */
+    user_agent: string;
+    /** 创建时间 */
+    create_time: string;
   };
 
   type ResponseDto = {
@@ -78,7 +168,7 @@ declare namespace API {
     /** 响应数据 */
     data?: Record<string, any>;
     /** 响应消息 */
-    msg: string;
+    msg: Record<string, any>;
     /** 请求是否成功 */
     success: boolean;
   };
@@ -91,18 +181,7 @@ declare namespace API {
     id: string;
   };
 
-  type RsaDto = {
-    /** RSA公钥唯一标识 */
-    key_id: string;
-    /** RSA公钥 */
-    public_key: string;
-  };
-
   type String = {};
-
-  type SysControllerGetPublicKeyParams = {
-    key_id: string;
-  };
 
   type SysControllerRegisterCodeParams = {
     email: string;
@@ -127,7 +206,7 @@ declare namespace API {
     id: string;
   };
 
-  type UserInfoDto = {
+  type UserInfoResDto = {
     /** id */
     id: number;
     /** 用户名 */
@@ -161,6 +240,8 @@ declare namespace API {
     pageSize: number;
     /** 用户名 */
     username: string;
+    /** 用户状态 0停用 1启用 */
+    status: 0 | 1;
   };
 
   type UserStatusEnum = 0 | 1;

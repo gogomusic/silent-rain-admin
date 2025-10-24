@@ -19,7 +19,7 @@ export async function userControllerChangeStatus(
 
 /** 当前登陆用户详情 GET /user/current */
 export async function userControllerFindCurrent(options?: { [key: string]: any }) {
-  return request<API.ResponseDto & { data?: API.CurrentUserInfoDto }>('/user/current', {
+  return request<API.ResponseDto & { data?: API.CurrentUserInfoResDto }>('/user/current', {
     method: 'GET',
     ...(options || {}),
   });
@@ -31,7 +31,7 @@ export async function userControllerFindOne(
   params: API.UserControllerFindOneParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.ResponseDto & { data?: API.UserInfoDto }>('/user/info', {
+  return request<API.ResponseDto & { data?: API.UserInfoResDto }>('/user/info', {
     method: 'GET',
     params: {
       ...params,
@@ -47,7 +47,7 @@ export async function userControllerList(
 ) {
   return request<
     API.ResponseDto & {
-      data?: { list?: API.UserInfoDto[]; current?: number; pageSize?: number; total?: number };
+      data?: { list?: API.UserInfoResDto[]; current?: number; pageSize?: number; total?: number };
     }
   >('/user/list', {
     method: 'POST',

@@ -55,7 +55,7 @@ const Login: React.FC = () => {
   const type = 'account';
   const { initialState, setInitialState } = useModel('@@initialState');
   const { styles } = useStyles();
-  const { rsaKey } = useModel('rsa');
+  const { public_key } = useModel('rsa');
   const { message } = App.useApp();
 
   const fetchUserInfo = async () => {
@@ -80,10 +80,9 @@ const Login: React.FC = () => {
   };
 
   const handleSubmit = async (values: API.LoginUserDto) => {
-    const { public_key, key_id } = rsaKey;
     const password = rsaEncrypt(values.password, public_key!);
-    if (password && key_id) {
-      const { success, data: token } = await userControllerLogin({ ...values, password, key_id });
+    if (password) {
+      const { success, data: token } = await userControllerLogin({ ...values, password });
       if (success) {
         setToken(token!);
         const defaultLoginSuccessMessage = '登录成功！';

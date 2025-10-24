@@ -6,14 +6,11 @@ export const getToken = () => {
   return localStorage.getItem(TokenKey);
 };
 
-export const setToken = (token: string) => {
-  return localStorage.setItem(TokenKey, token);
-};
+export const setToken = (token: string) => localStorage.setItem(TokenKey, token);
 
 export const removeToken = () => {
-  return localStorage.removeItem(TokenKey);
+  localStorage.removeItem(TokenKey);
 };
-
 /**
  * 使用提供的RSA公钥加密字符串。
  */
@@ -54,3 +51,18 @@ export const formatListRes =
       };
     }
   };
+
+/** 规范化日期范围参数 */
+export const normalizeDateRangeParams: <T extends { dateRange?: [string, string] }>(
+  params: T,
+) => Omit<T, 'dateRange'> = (params) => {
+  const { dateRange, ...rest } = params;
+  const [start_date, end_date] = dateRange || [];
+  return start_date && end_date
+    ? {
+        ...rest,
+        start_date,
+        end_date,
+      }
+    : rest;
+};

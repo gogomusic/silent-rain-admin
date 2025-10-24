@@ -8,7 +8,7 @@ import { message } from '@/components/EscapeAntd';
 interface ResponseStructure<T = any> {
   data?: T;
   code: number;
-  msg: string;
+  msg: string | string[];
   success: boolean;
 }
 
@@ -44,7 +44,13 @@ export const requestConfig: RequestConfig = {
     errorThrower: (res: ResponseStructure) => {
       const { data, code, msg, success } = res;
       if (!success) {
-        const error: any = new Error(msg);
+        let message = '';
+        if (Array.isArray(msg)) {
+          message = msg.join('\n');
+        } else {
+          message = msg as string;
+        }
+        const error: any = new Error(message);
         error.name = 'BizError';
         error.info = { code, msg, data };
         throw error; // 抛出自制的错误
@@ -68,7 +74,7 @@ export const requestConfig: RequestConfig = {
         }
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        else message.error(error.response.data.msg || '服务器错误，请稍后重试');
+        else message.error(error.response.data.msg || '服务器错误，请稍后再试');
       } else if (error.request) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，

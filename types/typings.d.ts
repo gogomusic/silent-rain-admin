@@ -30,3 +30,16 @@ declare interface Window {
   /** 忽略的错误信息 */
   IGNORED_ERRORS: string[];
 }
+
+declare namespace API {
+  type ResponseDto = {
+    /** 响应状态码 */
+    code: number;
+    /** 响应数据 */
+    data?: Record<string, any>;
+    /** 响应消息 */
+    msg: string | string[];
+    /** 请求是否成功 */
+    success: boolean;
+  };
+}
