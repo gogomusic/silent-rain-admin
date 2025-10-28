@@ -2,6 +2,21 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
+/** 修改密码 POST /user/changePwd */
+export async function userControllerChangePwd(
+  body: API.ChangeUserPwdDto,
+  options?: { [key: string]: any },
+) {
+  return request<API.ResponseDto>('/user/changePwd', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 修改用户状态 POST /user/changeStatus */
 export async function userControllerChangeStatus(
   body: API.ChangeStatusDto,
@@ -78,6 +93,21 @@ export async function userControllerLogin(
 export async function userControllerLogout(options?: { [key: string]: any }) {
   return request<API.ResponseDto>('/user/logout', {
     method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 重置密码 用户忘记密码时，通过用户名、邮箱、验证码重新设置密码 POST /user/resetPwd */
+export async function userControllerResetPwd(
+  body: API.UserResetPwdDto,
+  options?: { [key: string]: any },
+) {
+  return request<API.ResponseDto>('/user/resetPwd', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }

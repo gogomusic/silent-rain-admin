@@ -3,6 +3,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { useRef } from 'react';
 import { logControllerLoginLogList } from '@/services/silent-rain-admin/log';
+import { defaultConfig } from '@/common/pro-table.config';
 
 type TableDataType = API.LoginLogResDto;
 type TableSearchParams = API.LoginLogListDto & { dateRange?: [string, string] };
@@ -107,11 +108,9 @@ const LoginLog: React.FC = () => {
   return (
     <PageContainer header={{ title: pageTitle }}>
       <ProTable<TableDataType, TableSearchParams>
+        {...defaultConfig()}
         headerTitle={tableTitle}
         actionRef={actionRef}
-        rowKey="id"
-        scroll={{ x: 1200 }}
-        sticky={{ offsetHeader: 48 }}
         columns={columns}
         request={(p) => formatListRes(logControllerLoginLogList)(normalizeDateRangeParams(p))}
       />

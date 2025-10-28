@@ -6,6 +6,17 @@ declare namespace API {
     status: UserStatusEnum;
   };
 
+  type ChangeUserPwdDto = {
+    /** 密码 */
+    password: string;
+    /** 新密码 */
+    new_password: string;
+    /** 确认新密码 */
+    confirm: string;
+    /** 验证码 */
+    captcha: string;
+  };
+
   type CreateUserDto = {
     /** 用户名 */
     username: string;
@@ -121,6 +132,14 @@ declare namespace API {
     start_date: string;
     /** 结束日期 */
     end_date: string;
+    /** 模块 */
+    module: string;
+    /** 操作 */
+    action: string;
+    /** 操作结果 */
+    status: 0 | 1;
+    /** IP */
+    ip: string;
   };
 
   type OperationLogResDto = {
@@ -183,6 +202,10 @@ declare namespace API {
 
   type String = {};
 
+  type SysControllerChangePwdCodeParams = {
+    email: string;
+  };
+
   type SysControllerRegisterCodeParams = {
     email: string;
   };
@@ -242,6 +265,19 @@ declare namespace API {
     username: string;
     /** 用户状态 0停用 1启用 */
     status: 0 | 1;
+  };
+
+  type UserResetPwdDto = {
+    /** 新密码 */
+    new_password: string;
+    /** 确认新密码 */
+    confirm: string;
+    /** 验证码 */
+    captcha: string;
+    /** 用户名 */
+    username: string;
+    /** 邮箱 */
+    email: string;
   };
 
   type UserStatusEnum = 0 | 1;

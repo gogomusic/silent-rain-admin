@@ -36,7 +36,7 @@ declare namespace API {
     /** 响应状态码 */
     code: number;
     /** 响应数据 */
-    data?: Record<string, any>;
+    data?: Record<string, any> | string;
     /** 响应消息 */
     msg: string | string[];
     /** 请求是否成功 */

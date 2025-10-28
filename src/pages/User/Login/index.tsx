@@ -2,13 +2,14 @@ import { Footer } from '@/components';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { history, Helmet, useModel } from '@umijs/max';
-import { App, Modal, Tabs } from 'antd';
+import { App, Tabs } from 'antd';
 import Settings from '../../../../config/defaultSettings';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createStyles } from 'antd-style';
 import { userControllerLogin } from '@/services/silent-rain-admin/user';
 import { flushSync } from 'react-dom';
 import { getToken, rsaEncrypt, setToken } from '@/utils';
+import UpdatePwd from '@/components/RightContent/UpdatePwd';
 
 const useStyles = createStyles(({ token }) => {
   return {
@@ -57,6 +58,7 @@ const Login: React.FC = () => {
   const { styles } = useStyles();
   const { public_key } = useModel('rsa');
   const { message } = App.useApp();
+  const [updateModalOpen, setUpdateModalOpen] = useState<boolean>(false);
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -181,17 +183,7 @@ const Login: React.FC = () => {
               &nbsp;&nbsp;
               <a
                 onClick={() => {
-                  Modal.info({
-                    title: '忘记密码了？',
-                    centered: true,
-                    content: (
-                      <div>
-                        请联系管理员
-                        <a href={`mailto:${ADMIN_EMAIL}`}>{ADMIN_EMAIL}</a>找回密码。
-                      </div>
-                    ),
-                    onOk() {},
-                  });
+                  setUpdateModalOpen(true);
                 }}
               >
                 忘记密码
@@ -204,6 +196,13 @@ const Login: React.FC = () => {
       </div>
 
       <Footer />
+      <UpdatePwd
+        mode="reset"
+        open={updateModalOpen}
+        onModalClose={() => {
+          setUpdateModalOpen(false);
+        }}
+      />
     </div>
   );
 };

@@ -1,13 +1,14 @@
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
 import { Spin } from 'antd';
 import { createStyles } from 'antd-style';
 import type { MenuInfo } from 'rc-menu/lib/interface';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { flushSync } from 'react-dom';
 import HeaderDropdown from '../HeaderDropdown';
 import { userControllerLogout } from '@/services/silent-rain-admin/user';
 import { removeToken } from '@/utils';
+import UpdatePwd from './UpdatePwd';
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -39,6 +40,8 @@ const useStyles = createStyles(({ token }) => {
 });
 
 export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, children }) => {
+  const [updateModalOpen, setUpdateModalOpen] = useState<boolean>(false);
+
   /**
    * 退出登录，并且将当前的 url 保存
    */
@@ -68,6 +71,9 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
           setInitialState((s) => ({ ...s, currentUser: undefined }));
         });
         logout();
+        return;
+      } else if (key === 'change-pwd') {
+        setUpdateModalOpen(true);
         return;
       }
       history.push(`/system/${key}`);
@@ -106,6 +112,11 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
         ]
       : []),
     {
+      key: 'change-pwd',
+      icon: <LockOutlined />,
+      label: '修改密码',
+    },
+    {
       key: 'personal-center',
       icon: <UserOutlined />,
       label: '个人中心',
@@ -118,14 +129,23 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
   ];
 
   return (
-    <HeaderDropdown
-      menu={{
-        selectedKeys: [],
-        onClick: onMenuClick,
-        items: menuItems,
-      }}
-    >
-      {children}
-    </HeaderDropdown>
+    <>
+      <HeaderDropdown
+        menu={{
+          selectedKeys: [],
+          onClick: onMenuClick,
+          items: menuItems,
+        }}
+      >
+        {children}
+      </HeaderDropdown>
+      <UpdatePwd
+        mode="change"
+        open={updateModalOpen}
+        onModalClose={() => {
+          setUpdateModalOpen(false);
+        }}
+      />
+    </>
   );
 };

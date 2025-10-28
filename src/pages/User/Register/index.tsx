@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Button, App } from 'antd';
 import { createStyles } from 'antd-style';
-import api from '@/services/silent-rain-admin';
 import { Helmet, history, useModel } from '@umijs/max';
 import Settings from '../../../../config/defaultSettings';
-import { sysControllerRegister } from '@/services/silent-rain-admin/sys';
+import { sysControllerRegister, sysControllerRegisterCode } from '@/services/silent-rain-admin/sys';
 import { rsaEncrypt } from '@/utils';
 import { useCountDown } from '@/hooks/useCountDown';
 
@@ -152,7 +151,7 @@ const Register: React.FC = () => {
               { max: 32, message: '密码最多32位' },
               {
                 pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/,
-                message: '密码至少包含字母和数字',
+                message: '密码至少应包含字母和数字',
               },
             ]}
           >
@@ -201,11 +200,11 @@ const Register: React.FC = () => {
                 }
                 try {
                   startCountDown();
-                  await api.sys.sysControllerRegisterCode({ email });
-                  message.success('验证码已发送');
+                  const { success } = await sysControllerRegisterCode({ email });
+                  if (success) message.success('验证码已发送');
+                  else throw new Error('验证码发送失败');
                 } catch (_error) {
                   stopCountDown();
-                } finally {
                 }
               }}
             >

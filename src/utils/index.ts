@@ -11,6 +11,7 @@ export const setToken = (token: string) => localStorage.setItem(TokenKey, token)
 export const removeToken = () => {
   localStorage.removeItem(TokenKey);
 };
+
 /**
  * 使用提供的RSA公钥加密字符串。
  */
@@ -36,16 +37,12 @@ export const formatListRes =
       if (success) {
         return {
           data: data?.list || [],
-          current: data?.current || 1,
-          pageSize: data?.pageSize || 10,
           total: data?.total || 0,
           success: true,
         };
       }
       return {
         data: [],
-        current: 1,
-        pageSize: 10,
         total: 0,
         success: false,
       };
@@ -66,3 +63,13 @@ export const normalizeDateRangeParams: <T extends { dateRange?: [string, string]
       }
     : rest;
 };
+
+/** 不会报错的Json.Parse */
+export function safeJsonParse(jsonString: string): object | undefined {
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    console.error('非法的JSON格式', error);
+    return undefined;
+  }
+}

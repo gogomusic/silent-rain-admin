@@ -5,10 +5,10 @@ const useAutoCompleteEmail = () => {
   /** 邮箱自动填充配置 */
   const setAutoCompleteEmail = (searchText: string) => {
     const suffix = [
-      '@gmail.com',
-      '@163.com',
       '@qq.com',
+      '@163.com',
       '@foxmail.com',
+      '@gmail.com',
       '@outlook.com',
       '@yahoo.com',
     ];

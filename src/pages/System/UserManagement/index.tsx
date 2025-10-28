@@ -1,5 +1,5 @@
 import AvatarView from '@/components/AvatarView';
-import { userStatusOptions } from '@/options';
+import { userStatusOptions } from '@/common/options';
 import { userControllerChangeStatus, userControllerList } from '@/services/silent-rain-admin/user';
 import { formatListRes } from '@/utils';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -7,8 +7,9 @@ import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { App, Space } from 'antd';
 import { useRef } from 'react';
 import { Switch } from 'antd';
+import { defaultConfig } from '@/common/pro-table.config';
 
-type TableDataType = API.UserInfoDto;
+type TableDataType = API.UserInfoResDto;
 type TableSearchParams = API.UserListReqDto;
 const pageTitle = '';
 const tableTitle = '用户管理';
@@ -113,11 +114,9 @@ const UserManagement: React.FC = () => {
   return (
     <PageContainer header={{ title: pageTitle }}>
       <ProTable<TableDataType, TableSearchParams>
+        {...defaultConfig()}
         headerTitle={tableTitle}
         actionRef={actionRef}
-        rowKey="id"
-        scroll={{ x: 1200 }}
-        sticky={{ offsetHeader: 48 }}
         columns={columns}
         request={formatListRes(userControllerList)}
       />
