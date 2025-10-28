@@ -35,6 +35,8 @@ const UpdatePwd: React.FC<{
   const { startCountDown, loading, stopCountDown, second } = useCountDown();
   const { public_key } = useModel('rsa');
   const autoCompleteCfg = useAutoCompleteEmail();
+  const { initialState } = useModel('@@initialState');
+  const email = initialState?.currentUser?.email;
 
   const onChangeFinish = async (values: API.ChangeUserPwdDto) => {
     const password = rsaEncrypt(values.password, public_key!);
@@ -94,10 +96,10 @@ const UpdatePwd: React.FC<{
       }}
       labelAlign="right"
       labelCol={{
-        span: mode === 'reset' ? 6 : 7,
+        span: 6,
       }}
       wrapperCol={{
-        span: mode === 'reset' ? 16 : 7,
+        span: 16,
       }}
       labelWrap
       // @ts-ignore
@@ -202,14 +204,14 @@ const UpdatePwd: React.FC<{
           style={{ padding: '0 8px' }}
           disabled={loading}
           onClick={async () => {
-            const email = formInstance.getFieldValue('email');
-            if (!email) {
+            const mail = mode === 'reset' ? formInstance.getFieldValue('email') : email;
+            if (!mail) {
               message.error('请先输入邮箱');
               return;
             }
             try {
               startCountDown();
-              const { success } = await sysControllerChangePwdCode({ email });
+              const { success } = await sysControllerChangePwdCode({ email: mail });
               if (success) message.success('验证码已发送至您的注册邮箱，请注意查收！');
               else throw new Error('验证码发送失败');
             } catch (err) {
