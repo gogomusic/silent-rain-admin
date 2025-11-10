@@ -25,10 +25,10 @@ const useStyles = createStyles(() => {
 
 const UpdatePwd: React.FC<{
   open: boolean;
-  onModalClose: () => void;
+  onClose: () => void;
   mode: 'change' | 'reset'; // change: 修改密码，reset: 重置密码
   onSubmit?: () => void;
-}> = ({ open, onSubmit, onModalClose, mode }) => {
+}> = ({ open, onSubmit, onClose, mode }) => {
   const [formInstance] = Form.useForm<API.UserResetPwdDto | API.ChangeUserPwdDto>();
   const { message } = App.useApp();
   const { styles } = useStyles();
@@ -83,7 +83,7 @@ const UpdatePwd: React.FC<{
       width={500}
       open={open}
       onOpenChange={(open) => {
-        if (!open) onModalClose();
+        if (!open) onClose();
       }}
       title={mode === 'reset' ? '重置密码' : '修改密码'}
       form={formInstance}
@@ -92,7 +92,7 @@ const UpdatePwd: React.FC<{
       modalProps={{
         destroyOnHidden: true,
         centered: true,
-        onCancel: onModalClose,
+        onCancel: onClose,
       }}
       labelAlign="right"
       labelCol={{

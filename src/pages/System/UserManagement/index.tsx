@@ -1,16 +1,20 @@
 import AvatarView from '@/components/AvatarView';
-import { userStatusOptions } from '@/common/options';
+import { statusOptions } from '@/common/options';
 import { userControllerChangeStatus, userControllerList } from '@/services/silent-rain-admin/user';
 import { formatListRes } from '@/utils';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
-import { App, Space } from 'antd';
-import { useRef } from 'react';
+import { App, Space, Tag } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 import { Switch } from 'antd';
 import { defaultConfig } from '@/common/pro-table.config';
+import { roleControllerAll } from '@/services/silent-rain-admin/role';
+import { CloseCircleOutlined, TeamOutlined } from '@ant-design/icons';
+import SetRoles from './components/SetRoles';
+import AccessButton from '@/components/AccessButton';
 
-type TableDataType = API.UserInfoResDto;
-type TableSearchParams = API.UserListReqDto;
+type TableDataType = API.User;
+type TableSearchParams = API.UserListDto;
 const pageTitle = '';
 const tableTitle = '用户管理';
 
@@ -18,7 +22,15 @@ const tableTitle = '用户管理';
 const UserManagement: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const { message } = App.useApp();
+  const [allRoles, setAllRoles] = useState<API.AllRolesVo[]>([]);
+  const [roleModalParams, setRoleModalParams] = useState<Partial<API.SetRolesDto>>();
+  const [roleModalOpen, setRoleModalOpen] = useState(false);
 
+  useEffect(() => {
+    roleControllerAll().then(({ success, data }) => {
+      if (success) setAllRoles(data?.list || []);
+    });
+  }, []);
   const columns: ProColumns<TableDataType>[] = [
     {
       title: '头像 / 昵称',
@@ -42,22 +54,30 @@ const UserManagement: React.FC = () => {
       align: 'left',
       width: 150,
     },
-    // {
-    //   key: 'roles',
-    //   title: '角色',
-    //   dataIndex: 'roles',
-    //   align: 'left',
-    //   search: false,
-    //   render: (text, record) => {
-    //     return record?.roles?.map((item) => (
-    //       <Tag style={{ marginBottom: '2px', marginTop: '2px' }} key={item.id}>
-    //         {item.role_name}
-    //       </Tag>
-    //     ));
-    //   },
-    //   ellipsis: false,
-    //   width: 150,
-    // },
+    {
+      key: 'roles',
+      title: '角色',
+      dataIndex: 'roles',
+      align: 'left',
+      search: false,
+      render: (_, record) => {
+        return record?.roles?.map((item) => {
+          const name = allRoles.find((role) => role.id === item)?.name;
+          return (
+            <Tag
+              style={{ marginBottom: '2px', marginTop: '2px' }}
+              key={item}
+              icon={name ? undefined : <CloseCircleOutlined />}
+              color={name ? undefined : 'red'}
+            >
+              {name || '未知角色'}
+            </Tag>
+          );
+        });
+      },
+      ellipsis: false,
+      width: 150,
+    },
     {
       title: '邮箱',
       key: 'email',
@@ -92,22 +112,43 @@ const UserManagement: React.FC = () => {
       },
       valueType: 'select',
       fieldProps: {
-        options: userStatusOptions,
+        options: statusOptions,
       },
     },
     {
       title: '更新时间',
-      key: 'update_time',
-      dataIndex: 'update_time',
+      key: 'updated_at',
+      dataIndex: 'updated_at',
       width: 150,
       search: false,
     },
     {
       title: '创建时间',
-      key: 'create_time',
-      dataIndex: 'create_time',
+      key: 'created_at',
+      dataIndex: 'created_at',
       width: 150,
       search: false,
+    },
+    {
+      title: '操作',
+      key: 'option',
+      dataIndex: 'option',
+      valueType: 'option',
+      width: 120,
+      fixed: 'right',
+      render: (_, record) => [
+        <AccessButton
+          key="user:setRoles"
+          code="user:setRoles"
+          icon={<TeamOutlined />}
+          onClick={() => {
+            setRoleModalParams(record);
+            setRoleModalOpen(true);
+          }}
+        >
+          分配角色
+        </AccessButton>,
+      ],
     },
   ];
 
@@ -119,6 +160,13 @@ const UserManagement: React.FC = () => {
         actionRef={actionRef}
         columns={columns}
         request={formatListRes(userControllerList)}
+      />
+      <SetRoles
+        open={roleModalOpen}
+        params={roleModalParams}
+        allRoles={allRoles}
+        onClose={() => void setRoleModalOpen(false)}
+        onSubmit={() => void actionRef.current?.reload()}
       />
     </PageContainer>
   );

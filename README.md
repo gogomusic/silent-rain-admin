@@ -39,3 +39,7 @@ You can also use script to auto fix some lint error:
 ```bash
 npm run lint:fix
 ```
+
+### 注意
+
+1. `services` 中的 `API` 接口由后端提供的 `swagger`文档自动生成,（使用 `pnpm openapi` 命令）。请不要更改其中的文件，否则会在下次生成接口时被覆盖。

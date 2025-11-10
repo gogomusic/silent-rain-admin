@@ -142,7 +142,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
       <UpdatePwd
         mode="change"
         open={updateModalOpen}
-        onModalClose={() => {
+        onClose={() => {
           setUpdateModalOpen(false);
         }}
       />

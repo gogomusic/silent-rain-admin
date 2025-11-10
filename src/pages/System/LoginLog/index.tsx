@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import { logControllerLoginLogList } from '@/services/silent-rain-admin/log';
 import { defaultConfig } from '@/common/pro-table.config';
 
-type TableDataType = API.LoginLogResDto;
+type TableDataType = API.LoginLog;
 type TableSearchParams = API.LoginLogListDto & { dateRange?: [string, string] };
 const pageTitle = '';
 const tableTitle = '登录日志';
@@ -98,8 +98,8 @@ const LoginLog: React.FC = () => {
     },
     {
       title: '创建时间',
-      key: 'create_time',
-      dataIndex: 'create_time',
+      key: 'created_at',
+      dataIndex: 'created_at',
       width: 150,
       search: false,
     },

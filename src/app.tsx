@@ -1,19 +1,23 @@
 import { Footer, AvatarDropdown, AvatarName } from '@/components';
 import { LinkOutlined } from '@ant-design/icons';
-import type { Settings as LayoutSettings } from '@ant-design/pro-components';
+import type { Settings as LayoutSettings, MenuDataItem } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RuntimeConfig, RunTimeLayoutConfig } from '@umijs/max';
-import { history } from '@umijs/max';
+import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { requestConfig } from './requestConfig';
 import React from 'react';
-import { userControllerFindCurrent } from './services/silent-rain-admin/user';
+import { userControllerFindCurrent, userControllerMenus } from './services/silent-rain-admin/user';
 import { ignoreConsoleError } from './utils/console';
-import { App, ConfigProvider } from 'antd';
-import { removeToken } from './utils';
+import { App, ConfigProvider, Space } from 'antd';
+import { array2tree, removeToken, renderAntdIcon, TreeNode } from './utils';
 import { isDev, loginPath, registerPath } from './config';
 import EscapeAntd from './components/EscapeAntd';
 import { avatarBgColor } from './components/AvatarView';
+
+export type MenuItem = Omit<API.Menu & TreeNode & MenuDataItem, 'children'> & {
+  children?: MenuItem[];
+};
 
 ignoreConsoleError();
 
@@ -22,9 +26,10 @@ ignoreConsoleError();
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUserInfoDto;
+  currentUser?: API.User;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUserInfoDto | undefined>;
+  fetchUserInfo?: () => Promise<API.User | undefined>;
+  menus?: MenuItem[];
 }> {
   const fetchUserInfo = async () => {
     try {
@@ -40,10 +45,16 @@ export async function getInitialState(): Promise<{
   const { location } = history;
   if (![registerPath, loginPath].includes(location.pathname)) {
     const currentUser = await fetchUserInfo();
+    let menus: MenuItem[] = [];
+    const { success, data } = await userControllerMenus();
+    if (success) {
+      menus = array2tree(data?.map((item) => ({ ...item, hideInMenu: item.is_hidden })) || []);
+    }
     return {
       fetchUserInfo,
       currentUser,
       settings: defaultSettings as Partial<LayoutSettings>,
+      menus,
     };
   }
   return {
@@ -55,7 +66,25 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
+    menuDataRender: () => initialState!.menus! || [],
     // actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
+    menuHeaderRender: undefined,
+    subMenuItemRender: (item) => (
+      <Link to={item.path!}>
+        <Space>
+          {renderAntdIcon(item.icon)}
+          {item.name}
+        </Space>
+      </Link>
+    ),
+    menuItemRender: (item) => (
+      <Link to={item.path!}>
+        <Space>
+          {renderAntdIcon(item.icon)}
+          {item.name}
+        </Space>
+      </Link>
+    ),
     actionsRender: () => [],
     avatarProps: {
       src: API_URL + initialState?.currentUser?.avatar_info.file_path,
@@ -109,7 +138,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
           </a>,
         ]
       : [],
-    menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     childrenRender: (children) => {

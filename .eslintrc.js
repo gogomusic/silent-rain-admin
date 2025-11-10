@@ -17,5 +17,6 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
+    'no-debugger': 'off',
   },
 };

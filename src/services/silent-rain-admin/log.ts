@@ -7,18 +7,17 @@ export async function logControllerLoginLogList(
   body: API.LoginLogListDto,
   options?: { [key: string]: any },
 ) {
-  return request<
-    API.ResponseDto & {
-      data?: { list?: API.LoginLogResDto[]; current?: number; pageSize?: number; total?: number };
-    }
-  >('/log/loginLogList', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<API.ResponseDto & { data?: { list?: API.LoginLog[]; total?: number } }>(
+    '/log/loginLogList',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 操作日志列表 POST /log/operationLogList */
@@ -26,21 +25,15 @@ export async function logControllerOperationLogList(
   body: API.OperationLogListDto,
   options?: { [key: string]: any },
 ) {
-  return request<
-    API.ResponseDto & {
-      data?: {
-        list?: API.OperationLogResDto[];
-        current?: number;
-        pageSize?: number;
-        total?: number;
-      };
-    }
-  >('/log/operationLogList', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<API.ResponseDto & { data?: { list?: API.OperationLog[]; total?: number } }>(
+    '/log/operationLogList',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }

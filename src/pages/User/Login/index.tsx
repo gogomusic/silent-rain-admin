@@ -199,7 +199,7 @@ const Login: React.FC = () => {
       <UpdatePwd
         mode="reset"
         open={updateModalOpen}
-        onModalClose={() => {
+        onClose={() => {
           setUpdateModalOpen(false);
         }}
       />

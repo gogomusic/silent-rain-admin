@@ -32,7 +32,7 @@ declare interface Window {
 }
 
 declare namespace API {
-  type ResponseDto = {
+  interface ResponseDto {
     /** 响应状态码 */
     code: number;
     /** 响应数据 */
@@ -41,5 +41,9 @@ declare namespace API {
     msg: string | string[];
     /** 请求是否成功 */
     success: boolean;
-  };
+  }
+  interface MenuTree extends Menu {
+    hideInMenu?: boolean;
+    routes?: MenuTree[];
+  }
 }

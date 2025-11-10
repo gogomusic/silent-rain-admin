@@ -3,8 +3,6 @@ import { ProTableProps } from '@ant-design/pro-components';
 export const defaultConfig = <DataType, Params, ValueType>() =>
   ({
     rowKey: 'id',
-    defaultSize: 'small',
-
     revalidateOnFocus: true,
     scroll: { x: 1200 },
     sticky: { offsetHeader: 48 },

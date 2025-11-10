@@ -10,7 +10,7 @@
  * @param icon 配置路由的图标，取值参考 https://ant.design/components/icon-cn， 注意去除风格后缀和大小写，如想要配置图标为 <StepBackwardOutlined /> 则取值应为 stepBackward 或 StepBackward，如想要配置图标为 <UserOutlined /> 则取值应为 user 或者 User
  * @doc https://umijs.org/docs/guides/routes
  */
-export default [
+const routes = [
   {
     path: '/user',
     layout: false,
@@ -29,49 +29,54 @@ export default [
   },
   {
     path: '/dashboard',
-    name: 'dashboard',
-    icon: 'smile',
+    name: '首页',
     component: './Dashboard',
+    access: 'routeFilter',
   },
   {
     path: '/system',
     name: '系统管理',
-    icon: 'setting',
+    access: 'routeFilter',
     routes: [
       {
         path: '/system',
-        redirect: '/system/user-management',
+        redirect: '/system/personal-center',
       },
       {
         path: '/system/personal-center',
         name: '个人中心',
         component: './System/PersonalCenter',
+        access: 'routeFilter',
       },
       {
         path: '/system/user-management',
         name: '用户管理',
         component: './System/UserManagement',
+        access: 'routeFilter',
       },
-      // {
-      //   path: '/system/role-management',
-      //   name: '角色管理',
-      //   component: './System/RoleManagement',
-      // },
-
-      // {
-      //   path: '/system/menu-management',
-      //   name: '菜单管理',
-      //   component: './System/MenuManagement',
-      // },
+      {
+        path: '/system/role-management',
+        name: '角色管理',
+        component: './System/RoleManagement',
+        access: 'routeFilter',
+      },
+      {
+        path: '/system/menu-management',
+        name: '菜单管理',
+        component: './System/MenuManagement',
+        access: 'routeFilter',
+      },
       {
         path: '/system/login-log',
         name: '登录日志',
         component: './System/LoginLog',
+        access: 'routeFilter',
       },
       {
         path: '/system/operation-log',
         name: '操作日志',
         component: './System/OperationLog',
+        access: 'routeFilter',
       },
       // {
       //   path: '/system/version-log',
@@ -90,3 +95,6 @@ export default [
     component: './404',
   },
 ];
+
+export default routes;
+export type RouteType = (typeof routes)[number];

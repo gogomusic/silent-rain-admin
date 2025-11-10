@@ -4,14 +4,15 @@ import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { useRef, useState } from 'react';
 import { logControllerOperationLogList } from '@/services/silent-rain-admin/log';
 import { operationStatusOptions } from '@/common/options';
-import { Button, Select, Tag } from 'antd';
+import { Select, Tag } from 'antd';
 import { defaultConfig } from '@/common/pro-table.config';
 import JsonView from '@/components/JsonView';
 import CommonDetailModal from '@/components/CommonDetailModal/CommonDetailModal';
 import { logDict } from '@/dicts/log.dict';
 import { createStyles } from 'antd-style';
+import AccessButton from '@/components/AccessButton';
 
-type TableDataType = API.OperationLogResDto;
+type TableDataType = API.OperationLog;
 type TableSearchParams = API.OperationLogListDto & { dateRange?: [string, string] };
 const pageTitle = '';
 const tableTitle = '操作日志';
@@ -54,10 +55,17 @@ const OperationLog: React.FC = () => {
       hideInTable: true,
     },
     {
-      title: '昵称（用户名）',
+      title: '昵称',
       key: 'nickname',
       dataIndex: 'nickname',
+      hideInTable: true,
+    },
+    {
+      title: '昵称（用户名）',
+      key: 'name',
+      dataIndex: 'name',
       width: 150,
+      search: false,
       ellipsis: true,
       renderText: (_text, record) =>
         record.username ? `${record.nickname} (${record.username})` : '',
@@ -175,9 +183,9 @@ const OperationLog: React.FC = () => {
       ellipsis: true,
     },
     {
-      title: logDict.create_time,
-      key: 'create_time',
-      dataIndex: 'create_time',
+      title: logDict.created_at,
+      key: 'created_at',
+      dataIndex: 'created_at',
       width: 150,
       search: false,
     },
@@ -199,15 +207,14 @@ const OperationLog: React.FC = () => {
       fixed: 'right',
       render: (_, record) => {
         return (
-          <Button
-            type="link"
+          <AccessButton
             onClick={() => {
               setDetailModalParams(record);
               setDetailModalOpen(true);
             }}
           >
             查看
-          </Button>
+          </AccessButton>
         );
       },
     },
@@ -248,7 +255,7 @@ const OperationLog: React.FC = () => {
           'browser',
           'os',
           'user_agent',
-          'create_time',
+          'created_at',
           'fail_result',
         ]}
         renderSpecialData={(label, value) => {

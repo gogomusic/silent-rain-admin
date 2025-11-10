@@ -7,7 +7,7 @@ export async function userControllerChangePwd(
   body: API.ChangeUserPwdDto,
   options?: { [key: string]: any },
 ) {
-  return request<API.ResponseDto>('/user/changePwd', {
+  return request<API.ResponseDto & { data?: any }>('/user/changePwd', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ export async function userControllerChangeStatus(
   body: API.ChangeStatusDto,
   options?: { [key: string]: any },
 ) {
-  return request<API.ResponseDto>('/user/changeStatus', {
+  return request<API.ResponseDto & { data?: any }>('/user/changeStatus', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export async function userControllerChangeStatus(
 
 /** 当前登陆用户详情 GET /user/current */
 export async function userControllerFindCurrent(options?: { [key: string]: any }) {
-  return request<API.ResponseDto & { data?: API.CurrentUserInfoResDto }>('/user/current', {
+  return request<API.ResponseDto & { data?: API.User }>('/user/current', {
     method: 'GET',
     ...(options || {}),
   });
@@ -46,7 +46,7 @@ export async function userControllerFindOne(
   params: API.UserControllerFindOneParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.ResponseDto & { data?: API.UserInfoResDto }>('/user/info', {
+  return request<API.ResponseDto & { data?: API.User }>('/user/info', {
     method: 'GET',
     params: {
       ...params,
@@ -56,15 +56,8 @@ export async function userControllerFindOne(
 }
 
 /** 用户列表 POST /user/list */
-export async function userControllerList(
-  body: API.UserListReqDto,
-  options?: { [key: string]: any },
-) {
-  return request<
-    API.ResponseDto & {
-      data?: { list?: API.UserInfoResDto[]; current?: number; pageSize?: number; total?: number };
-    }
-  >('/user/list', {
+export async function userControllerList(body: API.UserListDto, options?: { [key: string]: any }) {
+  return request<API.ResponseDto & { data?: { list?: API.User[]; total?: number } }>('/user/list', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -91,8 +84,16 @@ export async function userControllerLogin(
 
 /** 退出登录 GET /user/logout */
 export async function userControllerLogout(options?: { [key: string]: any }) {
-  return request<API.ResponseDto>('/user/logout', {
+  return request<API.ResponseDto & { data?: any }>('/user/logout', {
     method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 获取当前用户的菜单 POST /user/menus */
+export async function userControllerMenus(options?: { [key: string]: any }) {
+  return request<API.ResponseDto & { data?: API.Menu[] }>('/user/menus', {
+    method: 'POST',
     ...(options || {}),
   });
 }
@@ -102,7 +103,22 @@ export async function userControllerResetPwd(
   body: API.UserResetPwdDto,
   options?: { [key: string]: any },
 ) {
-  return request<API.ResponseDto>('/user/resetPwd', {
+  return request<API.ResponseDto & { data?: any }>('/user/resetPwd', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 设置角色 POST /user/setRoles */
+export async function userControllerSetRoles(
+  body: API.SetRolesDto,
+  options?: { [key: string]: any },
+) {
+  return request<API.ResponseDto & { data?: any }>('/user/setRoles', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -117,7 +133,7 @@ export async function userControllerUpdateSelf(
   body: API.UpdateSelfDto,
   options?: { [key: string]: any },
 ) {
-  return request<API.ResponseDto>('/user/updateSelf', {
+  return request<API.ResponseDto & { data?: any }>('/user/updateSelf', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
