@@ -23,6 +23,9 @@ importers:
       '@ant-design/x-sdk':
         specifier: ^2.8.0
         version: 2.8.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@enum-plus/plugin-antd':
+        specifier: ^1.0.0
+        version: 1.0.0(enum-plus@3.1.8)
       '@microlink/react-json-view':
         specifier: ^1.31.20
         version: 1.31.20(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -44,6 +47,9 @@ importers:
       dayjs:
         specifier: ^1.11.21
         version: 1.11.21
+      enum-plus:
+        specifier: ^3.1.8
+        version: 3.1.8
       highlight.js:
         specifier: ^11.11.1
         version: 11.11.1
@@ -543,6 +549,12 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
+  '@biomejs/cli-darwin-x64@2.5.0':
+    resolution: {integrity: sha512-rg3VPL5P8mYro6pqlXYXuJWph21slVp3SZtAqWSrkZs40d2gTzYmHF8E/X1iTID25btmNKltNDJ926sqVBp7DQ==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [darwin]
+
   '@biomejs/cli-linux-arm64-musl@2.5.0':
     resolution: {integrity: sha512-vQdM4oSGaf7ZNeGO9w5+Y8SBtyser9M6znxYbm7Ec8wInxJu1WiKxFYZW5Auj2d80bcVvefuGGRxoFOE0eee8g==}
     engines: {node: '>=14.21.3'}
@@ -838,6 +850,11 @@ packages:
 
   '@emotion/weak-memoize@0.4.0':
     resolution: {integrity: sha512-snKqtPW01tN0ui7yu9rGv69aJXr/a/Ywvl11sUjNtEcRc+ng/mQriFL0wLXMef74iHa/EkftbDzU9F8iFbH+zg==}
+
+  '@enum-plus/plugin-antd@1.0.0':
+    resolution: {integrity: sha512-WSr8G/vWA0DGRzFD4kA1g+YGNcrmZwMIRsHATB0SPvsfAvPqY9R3yMZSDVpOFWx4kFhtiaAZf2eUyT+fkR6tqA==}
+    peerDependencies:
+      enum-plus: ^3.0.0
 
   '@epic-web/invariant@1.0.0':
     resolution: {integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==}
@@ -4633,6 +4650,10 @@ packages:
   entities@7.0.1:
     resolution: {integrity: sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==}
     engines: {node: '>=0.12'}
+
+  enum-plus@3.1.8:
+    resolution: {integrity: sha512-g2V3Bxj38a9x3bkBHiufnHpNJ5/LtUnEChZ5TXQEcCoLvK9T815GJALryBhcL/c40lU+Msa6P+hF8z7D7VO9vQ==}
+    engines: {node: '>=7.10.1'}
 
   env-paths@2.2.1:
     resolution: {integrity: sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==}
@@ -9563,6 +9584,7 @@ snapshots:
   '@biomejs/biome@2.5.0':
     optionalDependencies:
       '@biomejs/cli-darwin-arm64': 2.5.0
+      '@biomejs/cli-darwin-x64': 2.5.0
       '@biomejs/cli-linux-arm64': 2.5.0
       '@biomejs/cli-linux-arm64-musl': 2.5.0
       '@biomejs/cli-linux-x64': 2.5.0
@@ -9571,6 +9593,9 @@ snapshots:
       '@biomejs/cli-win32-x64': 2.5.0
 
   '@biomejs/cli-darwin-arm64@2.5.0':
+    optional: true
+
+  '@biomejs/cli-darwin-x64@2.5.0':
     optional: true
 
   '@biomejs/cli-linux-arm64-musl@2.5.0':
@@ -9906,6 +9931,10 @@ snapshots:
   '@emotion/utils@1.4.2': {}
 
   '@emotion/weak-memoize@0.4.0': {}
+
+  '@enum-plus/plugin-antd@1.0.0(enum-plus@3.1.8)':
+    dependencies:
+      enum-plus: 3.1.8
 
   '@epic-web/invariant@1.0.0': {}
 
@@ -11562,7 +11591,7 @@ snapshots:
 
   '@types/history@5.0.0':
     dependencies:
-      history: 4.10.1
+      history: 5.3.0
 
   '@types/hoist-non-react-statics@3.3.7(@types/react@19.2.17)':
     dependencies:
@@ -11620,7 +11649,7 @@ snapshots:
       '@types/history': 4.7.11
       '@types/react': 19.2.17
       '@types/react-router': 5.1.20
-      redux: 3.7.2
+      redux: 4.2.1
 
   '@types/react-router@5.1.20':
     dependencies:
@@ -11880,7 +11909,7 @@ snapshots:
       '@svgr/core': 6.5.1
       '@umijs/bundler-utils': 4.6.63
       '@umijs/utils': 4.6.63
-      '@vitejs/plugin-react': 4.0.0(vite@4.5.2(@types/node@25.9.3)(less@4.1.3)(lightningcss@1.32.0)(sass@1.54.0)(terser@5.48.0))
+      '@vitejs/plugin-react': 4.0.0(vite@4.5.2(@types/node@25.9.3)(less@4.6.6)(lightningcss@1.32.0)(sass@1.54.0)(terser@5.48.0))
       core-js: 3.34.0
       less: 4.1.3
       postcss-preset-env: 7.5.0(postcss@8.5.15)
@@ -12411,7 +12440,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@vitejs/plugin-react@4.0.0(vite@4.5.2(@types/node@25.9.3)(less@4.1.3)(lightningcss@1.32.0)(sass@1.54.0)(terser@5.48.0))':
+  '@vitejs/plugin-react@4.0.0(vite@4.5.2(@types/node@25.9.3)(less@4.6.6)(lightningcss@1.32.0)(sass@1.54.0)(terser@5.48.0))':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-react-jsx-self': 7.29.7(@babel/core@7.29.7)
@@ -14081,6 +14110,8 @@ snapshots:
   entities@4.4.0: {}
 
   entities@7.0.1: {}
+
+  enum-plus@3.1.8: {}
 
   env-paths@2.2.1: {}
 

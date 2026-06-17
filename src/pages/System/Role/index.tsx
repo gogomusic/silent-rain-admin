@@ -76,6 +76,7 @@ const RoleManagement: React.FC = () => {
       valueType: 'option',
       width: 150,
       fixed: 'right',
+      align: 'center',
       render: (_, record) => [
         <AccessButton
           key="role:update"
@@ -132,6 +133,7 @@ const RoleManagement: React.FC = () => {
             key="role:create"
             code="role:create"
             type="primary"
+            size="middle"
             icon={<PlusCircleOutlined />}
             onClick={() => {
               setModalParams({

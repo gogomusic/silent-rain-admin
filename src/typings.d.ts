@@ -30,3 +30,8 @@ declare namespace API {
     routes?: MenuTree[];
   }
 }
+
+declare interface Option {
+  label: string;
+  value: string | number;
+}

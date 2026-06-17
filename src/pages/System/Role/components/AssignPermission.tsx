@@ -175,6 +175,7 @@ const AssignPermission: React.FC<AssignPermissionProps> = ({
         fieldProps={{
           showLine: true,
           showIcon: true,
+          defaultExpandAll: true,
         }}
       />
     </ModalForm>

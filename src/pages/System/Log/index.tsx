@@ -1,3 +1,4 @@
+import { EyeOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Tag } from 'antd';
@@ -221,6 +222,7 @@ const OperationLog: React.FC = () => {
               setDetailModalParams(record);
               setDetailModalOpen(true);
             }}
+            icon={<EyeOutlined />}
           >
             查看
           </AccessButton>

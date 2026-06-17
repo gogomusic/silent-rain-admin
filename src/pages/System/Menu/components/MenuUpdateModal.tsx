@@ -2,32 +2,34 @@ import {
   CopyOutlined,
   EditOutlined,
   PlusCircleFilled,
-} from "@ant-design/icons";
+  PlusCircleOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import {
   ModalForm,
   ProFormDependency,
   ProFormDigit,
   ProFormText,
   ProFormTreeSelect,
-} from "@ant-design/pro-components";
-import { Button, Form, message } from "antd";
-import { useState } from "react";
-import { statusOptions } from "@/common/options";
-import CommonFormAntdIconSelect from "@/components/CommonFormItem/CommonFormAntdIconSelect";
-import CommonFormRadio from "@/components/CommonFormItem/CommonFormRadio";
+} from '@ant-design/pro-components';
+import { Button, Form, message } from 'antd';
+import { useState } from 'react';
+import { statusOptions } from '@/common/options';
+import CommonFormAntdIconSelect from '@/components/CommonFormItem/CommonFormAntdIconSelect';
+import CommonFormRadio from '@/components/CommonFormItem/CommonFormRadio';
 import {
   menuControllerCreate,
   menuControllerUpdate,
-} from "@/services/silent-rain-admin/menu";
-import { disableChildren, exhaustiveCheck } from "@/utils";
+} from '@/services/silent-rain-admin/menu';
+import { disableChildren, exhaustiveCheck } from '@/utils';
 
-type OperateType = "Create" | "Update" | "CreateTop" | "Copy";
+type OperateType = 'Create' | 'Update' | 'CreateTop' | 'Copy';
 
 const titleMap = {
-  Create: "创建菜单",
-  Update: "编辑菜单",
-  CreateTop: "创建菜单",
-  Copy: "复制菜单",
+  Create: '创建菜单',
+  Update: '编辑菜单',
+  CreateTop: '创建菜单',
+  Copy: '复制菜单',
 };
 
 const MenuUpdateModal: React.FC<{
@@ -44,7 +46,7 @@ const MenuUpdateModal: React.FC<{
 
   const updateMenu = async (values: API.MenuTree) => {
     let id: number | undefined;
-    if (op === "Update") {
+    if (op === 'Update') {
       id = params?.id;
     }
     const data = id
@@ -61,7 +63,7 @@ const MenuUpdateModal: React.FC<{
       Update: menuControllerUpdate,
     }[op](data);
     if (success) {
-      messageApi.success("操作成功");
+      messageApi.success('操作成功');
       commitCallback();
       return true;
     }
@@ -70,10 +72,10 @@ const MenuUpdateModal: React.FC<{
 
   const getModalData = async () => {
     switch (op) {
-      case "Update":
+      case 'Update':
         if (params) form.setFieldsValue(params);
         break;
-      case "Create":
+      case 'Create':
         if (params)
           form.setFieldsValue({
             type: 0,
@@ -82,7 +84,7 @@ const MenuUpdateModal: React.FC<{
             status: true,
           });
         break;
-      case "CreateTop":
+      case 'CreateTop':
         form.setFieldsValue({
           type: 0,
           pid: 0,
@@ -90,7 +92,7 @@ const MenuUpdateModal: React.FC<{
           status: true,
         });
         break;
-      case "Copy":
+      case 'Copy':
         if (params)
           form.setFieldsValue({
             ...params,
@@ -104,25 +106,25 @@ const MenuUpdateModal: React.FC<{
 
   const renderBtn = () => {
     switch (op) {
-      case "Create":
+      case 'Create':
         return (
-          <Button size="small" type="primary" icon={<PlusCircleFilled />}>
+          <Button size="small" type="link" icon={<PlusCircleOutlined />}>
             添加子菜单
           </Button>
         );
-      case "Copy":
+      case 'Copy':
         return (
-          <Button size="small" type="primary" icon={<CopyOutlined />}>
+          <Button size="small" type="link" icon={<CopyOutlined />}>
             复制
           </Button>
         );
-      case "Update":
+      case 'Update':
         return (
-          <Button size="small" type="primary" icon={<EditOutlined />}>
+          <Button size="small" type="link" icon={<EditOutlined />}>
             编辑
           </Button>
         );
-      case "CreateTop":
+      case 'CreateTop':
         return (
           <Button type="primary" size="middle" icon={<PlusCircleFilled />}>
             添加
@@ -166,13 +168,13 @@ const MenuUpdateModal: React.FC<{
         rules={[
           {
             required: true,
-            message: "请选择上级菜单",
+            message: '请选择上级菜单',
           },
         ]}
         fieldProps={{
           fieldNames: {
-            label: "name",
-            value: "id",
+            label: 'name',
+            value: 'id',
           },
           treeExpandedKeys: treeExpandedKeys,
           onTreeExpand: (expandedKeys) => {
@@ -184,11 +186,11 @@ const MenuUpdateModal: React.FC<{
           labelInValue: false,
           autoClearSearchValue: true,
           multiple: false,
-          treeNodeFilterProp: "title",
+          treeNodeFilterProp: 'title',
           treeData: [
             {
               id: 0,
-              name: "/",
+              name: '/',
               children: disableChildren(menuTree, params?.id),
             },
           ],
@@ -199,18 +201,18 @@ const MenuUpdateModal: React.FC<{
         label="菜单类型"
         options={[
           {
-            label: "菜单",
+            label: '菜单',
             value: 0,
           },
           {
-            label: "按钮",
+            label: '按钮',
             value: 1,
           },
         ]}
         name="type"
         required
       />
-      <ProFormDependency name={["type"]}>
+      <ProFormDependency name={['type']}>
         {({ type }) => {
           switch (type) {
             case 0:
@@ -223,7 +225,7 @@ const MenuUpdateModal: React.FC<{
                   rules={[
                     {
                       required: true,
-                      message: "请输入菜单名称",
+                      message: '请输入菜单名称',
                     },
                   ]}
                 />
@@ -239,7 +241,7 @@ const MenuUpdateModal: React.FC<{
                     rules={[
                       {
                         required: true,
-                        message: "请输入按钮名称",
+                        message: '请输入按钮名称',
                       },
                     ]}
                   />
@@ -251,11 +253,11 @@ const MenuUpdateModal: React.FC<{
                     rules={[
                       {
                         required: true,
-                        message: "请输入权限标识",
+                        message: '请输入权限标识',
                       },
                       {
                         pattern: /^[a-zA-Z]+:[a-zA-Z]+$/,
-                        message: "权限标识格式不正确，示例：user:list",
+                        message: '权限标识格式不正确，示例：user:list',
                       },
                     ]}
                   />
@@ -267,7 +269,7 @@ const MenuUpdateModal: React.FC<{
         }}
       </ProFormDependency>
 
-      <ProFormDependency name={["type"]}>
+      <ProFormDependency name={['type']}>
         {({ type }) => {
           if (type === 0) {
             return (
@@ -286,7 +288,7 @@ const MenuUpdateModal: React.FC<{
                   rules={[
                     {
                       required: true,
-                      message: "请输入路由地址",
+                      message: '请输入路由地址',
                     },
                   ]}
                 />
@@ -301,11 +303,11 @@ const MenuUpdateModal: React.FC<{
                   label="是否在菜单中显示"
                   options={[
                     {
-                      label: "显示",
+                      label: '显示',
                       value: false,
                     },
                     {
-                      label: "隐藏",
+                      label: '隐藏',
                       value: true,
                     },
                   ]}
@@ -329,7 +331,7 @@ const MenuUpdateModal: React.FC<{
         rules={[
           {
             required: true,
-            message: "请设置排序",
+            message: '请设置排序',
           },
         ]}
       />

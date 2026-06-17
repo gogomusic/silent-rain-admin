@@ -131,6 +131,7 @@ const Menu: React.FC = () => {
       width: 270,
       key: 'operate',
       valueType: 'option',
+      align: 'center',
       fixed: 'right',
       render: (_, record) => [
         <Access accessible={!!access['menu:create']} key="add">

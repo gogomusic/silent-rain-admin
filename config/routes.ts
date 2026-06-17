@@ -60,6 +60,12 @@ const routes = [
         component: './System/Log',
         access: 'routeFilter',
       },
+      {
+        path: '/system/dict',
+        name: 'dict',
+        component: './System/Dict',
+        access: 'routeFilter',
+      },
     ],
   },
   {

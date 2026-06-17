@@ -125,6 +125,7 @@ const UserManagement: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       width: 120,
+      align: 'center',
       fixed: 'right',
       render: (_, record) => [
         <AccessButton

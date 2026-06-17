@@ -1,4 +1,124 @@
 declare namespace API {
+  type DictControllerDeleteItemParams = {
+    /** ID */
+    id: number;
+  };
+
+  type DictControllerDeleteTypeParams = {
+    /** ID */
+    id: number;
+  };
+
+  type DictControllerGetDictDataParams = {
+    code: string;
+  };
+
+  type DictControllerListItemParams = {
+    /** ID */
+    id: number;
+  };
+
+  type DictItem = {
+    /** ID */
+    id: number;
+    /** 创建时间 */
+    createdAt: string;
+    /** 更新时间 */
+    updatedAt: string;
+    /** 字典类型ID */
+    typeId: number;
+    /** 字典标签（显示名） */
+    label: string;
+    /** 字典值 */
+    value: string;
+    /** 排序 */
+    sort: number;
+    /** 状态 */
+    status: boolean;
+    /** 备注 */
+    remark?: string;
+  };
+
+  type DictItemCreateDto = {
+    /** 字典类型ID */
+    typeId: number;
+    /** 字典标签（显示名） */
+    label: string;
+    /** 字典值 */
+    value: string;
+    /** 排序 */
+    sort?: number;
+    /** 状态 */
+    status: boolean;
+    /** 备注 */
+    remark?: string;
+  };
+
+  type DictItemUpdateDto = {
+    /** 字典类型ID */
+    typeId: number;
+    /** 字典标签（显示名） */
+    label: string;
+    /** 字典值 */
+    value: string;
+    /** 排序 */
+    sort?: number;
+    /** 状态 */
+    status: boolean;
+    /** 备注 */
+    remark?: string;
+    /** ID */
+    id: number;
+  };
+
+  type DictType = {
+    /** ID */
+    id: number;
+    /** 创建时间 */
+    createdAt: string;
+    /** 更新时间 */
+    updatedAt: string;
+    /** 字典名称 */
+    name: string;
+    /** 字典编码（唯一标识） */
+    code: string;
+    /** 状态 */
+    status: boolean;
+    /** 备注 */
+    remark?: string;
+  };
+
+  type DictTypeCreateDto = {
+    /** 字典名称 */
+    name: string;
+    /** 字典编码（唯一标识） */
+    code: string;
+    /** 状态 */
+    status: boolean;
+    /** 备注 */
+    remark?: string;
+  };
+
+  type DictTypeListDto = {
+    /** 页码 */
+    current?: number;
+    /** 分页大小 */
+    pageSize?: number;
+  };
+
+  type DictTypeUpdateDto = {
+    /** 字典名称 */
+    name: string;
+    /** 字典编码（唯一标识） */
+    code: string;
+    /** 状态 */
+    status: boolean;
+    /** 备注 */
+    remark?: string;
+    /** ID */
+    id: number;
+  };
+
   type ErrorShowType = 0 | 1 | 2 | 3 | 9;
 
   type FileBaseDto = {

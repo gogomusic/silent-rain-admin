@@ -6,12 +6,16 @@ type AccessButtonProps = GetProps<typeof Button> & {
   code?: `${string}:${string}`;
 };
 
-const AccessButton: React.FC<AccessButtonProps> = ({ code, ...props }) => {
+const AccessButton: React.FC<AccessButtonProps> = ({
+  code,
+  type = 'link',
+  ...props
+}) => {
   const access = useAccess();
 
   return (
     <Access accessible={code ? Boolean(access[code]) : true}>
-      <Button type="primary" size="middle" {...props} />
+      <Button type={type} size="small" {...props} />
     </Access>
   );
 };

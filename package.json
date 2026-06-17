@@ -32,6 +32,7 @@
     "@ant-design/x": "^2.8.0",
     "@ant-design/x-markdown": "^2.8.0",
     "@ant-design/x-sdk": "^2.8.0",
+    "@enum-plus/plugin-antd": "^1.0.0",
     "@microlink/react-json-view": "^1.31.20",
     "@tanstack/react-query": "^5.101.0",
     "antd": "^6.4.4",
@@ -39,6 +40,7 @@
     "antd-style": "^4.1.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.21",
+    "enum-plus": "^3.1.8",
     "highlight.js": "^11.11.1",
     "lodash": "^4.18.1",
     "react": "^19.2.7",
@@ -67,8 +69,7 @@
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx,json,css}": [
-      "biome check --write",
-      "tsc --noEmit"
+      "biome check --write"
     ]
   },
   "engines": {

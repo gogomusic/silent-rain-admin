@@ -17,6 +17,7 @@ import {
 } from '@/components';
 import defaultSettings from '../config/defaultSettings';
 import EscapeAntd from './components/EscapeAntd';
+import { initializeEnumExtensions } from './enums/extension';
 import { errorConfig } from './requestErrorConfig';
 import {
   userControllerFindCurrent,
@@ -27,6 +28,8 @@ import { array2tree, renderAntdIcon, type TreeNode } from './utils';
 export type MenuItem = Omit<API.Menu & TreeNode & MenuDataItem, 'children'> & {
   children?: MenuItem[];
 };
+
+initializeEnumExtensions();
 
 dayjs.extend(relativeTime);
 

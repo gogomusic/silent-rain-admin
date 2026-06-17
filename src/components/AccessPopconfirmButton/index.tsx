@@ -1,3 +1,4 @@
+import { DeleteOutlined } from '@ant-design/icons';
 import { Access, useAccess } from '@umijs/max';
 import { Button, type GetProps, Popconfirm } from 'antd';
 
@@ -15,15 +16,21 @@ const AccessPopconfirmButton: React.FC<AccessPopconfirmButtonProps> = ({
   code,
   buttonProps,
   title,
-  children,
+  children = '删除',
   ...props
 }) => {
   const access = useAccess();
+  const {
+    type = 'link',
+    size = 'middle',
+    icon = <DeleteOutlined />,
+    ...restButtonProps
+  } = buttonProps ?? {};
 
   return (
     <Access accessible={Boolean(access[code])}>
       <Popconfirm title={title || '确认删除？'} {...props}>
-        <Button type="primary" size="middle" danger {...buttonProps}>
+        <Button type={type} size={size} icon={icon} danger {...restButtonProps}>
           {children}
         </Button>
       </Popconfirm>

@@ -7,10 +7,12 @@ import * as menu from "./menu";
 import * as role from "./role";
 import * as file from "./file";
 import * as log from "./log";
+import * as dict from "./dict";
 export default {
   user,
   menu,
   role,
   file,
   log,
+  dict,
 };
