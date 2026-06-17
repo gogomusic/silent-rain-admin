@@ -1,0 +1,9 @@
+{
+  "version": 4.3,
+  "atDirectives": [
+    {
+      "name": "@source",
+      "description": "Tell Tailwind CSS where to scan for class names."
+    }
+  ]
+}
