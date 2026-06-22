@@ -89,7 +89,8 @@ const Login: React.FC = () => {
     if (success) {
       setToken(data?.token as string);
       message.success('登录成功！');
-      jump();
+      const urlParams = new URL(window.location.href).searchParams;
+      window.location.replace(urlParams.get('redirect') || '/');
     }
   };
 
