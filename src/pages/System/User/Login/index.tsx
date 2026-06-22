@@ -79,6 +79,8 @@ const Login: React.FC = () => {
     if (success) {
       const urlParams = new URL(window.location.href).searchParams;
       window.location.replace(urlParams.get('redirect') || '/');
+    } else {
+      removeToken();
     }
   };
 

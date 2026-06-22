@@ -53,9 +53,12 @@ export async function getInitialState(): Promise<{
       return data as API.User;
     } else {
       const { pathname, search, hash } = history.location;
-      history.replace(
-        `${loginPath}?redirect=${encodeURIComponent(pathname + search + hash)}`,
-      );
+      // 避免在登录页重复重定向导致 redirect 参数累积
+      if (pathname !== loginPath) {
+        history.replace(
+          `${loginPath}?redirect=${encodeURIComponent(pathname + search + hash)}`,
+        );
+      }
       return null;
     }
   };
