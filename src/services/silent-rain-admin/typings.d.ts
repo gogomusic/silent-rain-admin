@@ -378,8 +378,6 @@ declare namespace API {
     id: number;
   };
 
-  type String = {};
-
   type User = {
     /** ID */
     id: number;
@@ -453,6 +451,11 @@ declare namespace API {
     username: string;
     /** 密码 */
     password: string;
+  };
+
+  type UserLoginVo = {
+    /** Token */
+    token: string;
   };
 
   type UserRegisterDto = {

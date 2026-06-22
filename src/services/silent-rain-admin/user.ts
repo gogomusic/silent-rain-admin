@@ -79,14 +79,17 @@ export async function userControllerLogin(
   body: API.UserLoginDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.ResponseDto & { data?: string }>("/api/user/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: body,
-    ...(options || {}),
-  });
+  return request<API.ResponseDto & { data?: API.UserLoginVo }>(
+    "/api/user/login",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: body,
+      ...(options || {}),
+    }
+  );
 }
 
 /** 退出登录 GET /api/user/logout */

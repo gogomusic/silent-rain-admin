@@ -8,11 +8,6 @@ const envOptions: Record<string, string> = {
 
 console.info(`\x1b[33m${envOptions[process.env.UMI_ENV || 'dev']}\x1b[0m`);
 
-const API_URL = {
-  dev: DEV_API_URL,
-  prod: PROD_API_URL,
-}[process.env.UMI_ENV || 'dev'];
-
 /**
  * @name 代理的配置
  * @see 在生产环境 代理是无法生效的，所以这里没有生产环境的配置
@@ -28,7 +23,18 @@ export default {
   dev: {
     '/api/': {
       // 要代理的地址
-      target: API_URL,
+      target: DEV_API_URL,
+      // 配置了这个可以从 http 代理到 https
+      // 依赖 origin 的功能可能需要这个，比如 cookie
+      changeOrigin: true,
+      // 重写路径
+      // pathRewrite: { '^/api': '' },
+    },
+  },
+  prod: {
+    '/api/': {
+      // 要代理的地址
+      target: PROD_API_URL,
       // 配置了这个可以从 http 代理到 https
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,

@@ -1,13 +1,18 @@
 // https://umijs.org/config/
 import { join } from 'node:path';
 import { defineConfig } from '@umijs/max';
-import { API_URL } from './config.dev'; // 引入API_URL
+import { API_URL as API_URL_DEV } from './config.dev'; // 引入API_URL
+import { API_URL as API_URL_PROD } from './config.prod'; // 引入API_URL
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 
 import routes from './routes';
 
 const { UMI_ENV = 'dev' } = process.env;
+const API_URL = {
+  dev: API_URL_DEV,
+  prod: API_URL_PROD,
+}[UMI_ENV];
 
 // Compute commit hash: env vars take precedence, fall back to git at build time
 const commitHash =

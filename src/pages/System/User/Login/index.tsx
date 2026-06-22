@@ -85,9 +85,9 @@ const Login: React.FC = () => {
   };
 
   const handleSubmit = async (values: API.UserLoginDto) => {
-    const { success, data: token } = await userControllerLogin(values);
+    const { success, data } = await userControllerLogin(values);
     if (success) {
-      setToken(token as string);
+      setToken(data?.token as string);
       message.success('登录成功！');
       jump();
     }
