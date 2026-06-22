@@ -53,7 +53,7 @@ const useStyles = createStyles(() => {
       top: -1,
       width: 80,
       fontSize: 14,
-      color: '#FFF',
+      color: 'green',
       fontWeight: 'bold',
       cursor: 'pointer',
       textAlign: 'right',

@@ -97,7 +97,7 @@ const ChangePwd: React.FC<{
       />
       <ProFormText.Password
         hasFeedback
-        name="confirmNewPassword"
+        name="confirmPassword"
         dependencies={['newPassword']}
         label="确认新密码"
         placeholder="请再次输入新密码"
